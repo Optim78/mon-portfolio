@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coulibaly Alassane — IT Support Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  :root {
+    --bg: #060c14;
+    --bg2: #0b1525;
+    --bg3: #0f1e35;
+    --cyan: #00e5ff;
+    --cyan2: #00b4d8;
+    --green: #39ff14;
+    --text: #e0eaf5;
+    --muted: #6a8aaa;
+    --border: rgba(0,229,255,0.12);
+    --card: rgba(11,21,37,0.85);
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(6,12,20,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+    background: var(--cyan); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid rgba(0,229,255,0.35);
+    padding: 0.35rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-name {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeDown 0.9s ease 0.1s both;
+  }
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    color: var(--muted);
+    margin: 1rem 0 1.5rem;
+    animation: fadeDown 0.9s ease 0.2s both;
+  }
+  .hero-title span { color: var(--cyan); }
+  .hero-tagline {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: 600;
+    color: var(--text);
+    max-width: 650px; margin: 0 auto 2.5rem;
+    animation: fadeDown 0.9s ease 0.3s both;
+  }
+  .hero-ctas {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeDown 0.9s ease 0.4s both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--cyan);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 2px;
+    transition: all 0.3s;
+    border: 2px solid var(--cyan);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,229,255,0.3);
+  }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 2px;
+    border: 2px solid rgba(0,229,255,0.35);
+    transition: all 0.3s;
+  }
+  .btn-outline:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,229,255,0.2);
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 4rem;
+    animation: fadeDown 0.9s ease 0.5s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .sec-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .sec-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .sec-line {
+    width: 48px; height: 2px;
+    background: var(--cyan);
+    margin: 1rem auto 0;
+  }
+
+  /* ── ABOUT ── */
+  #about { padding: 7rem 0; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-photo-frame {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 320px;
+    margin: 0 auto;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7rem;
+    color: rgba(0,229,255,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo-frame::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 40px; height: 40px;
+    border-top: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
+  }
+  .about-photo-frame::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 40px; height: 40px;
+    border-bottom: 2px solid var(--cyan);
+    border-left: 2px solid var(--cyan);
+  }
+  .about-badge {
+    position: absolute; bottom: -16px; right: -16px;
+    background: var(--cyan);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .about-text p strong { color: var(--text); }
+  .about-highlights {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .highlight-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .highlight-item i { color: var(--cyan); font-size: 0.7rem; }
+
+  /* ── SKILLS ── */
+  #skills { padding: 7rem 0; background: var(--bg2); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-category:hover {
+    border-color: rgba(0,229,255,0.4);
+    transform: translateY(-4px);
+  }
+  .skill-cat-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .skill-cat-title i { font-size: 0.85rem; }
+  .skill-bar-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .skill-bar-item {}
+  .skill-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+  .skill-bar-label span:last-child {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .skill-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan2), var(--cyan));
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── STACK ── */
+  #stack { padding: 7rem 0; }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+  .stack-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .stack-card:hover {
+    border-color: var(--cyan);
+    background: rgba(0,229,255,0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,229,255,0.08);
+  }
+  .stack-card i {
+    font-size: 1.6rem;
+    color: var(--cyan);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .stack-card span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1.4;
+  }
+
+  /* ── EXPERIENCE (TIMELINE) ── */
+  #experience { padding: 7rem 0; background: var(--bg2); }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--cyan), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3.5rem;
+    padding-left: 2.5rem;
+    opacity: 0; transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute; left: -2rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--cyan);
+    top: 6px;
+    box-shadow: 0 0 10px rgba(0,229,255,0.4);
+  }
+  .timeline-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .timeline-company {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+  .timeline-role {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .timeline-achievements {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .achievement {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .achievement::before {
+    content: '▸';
+    color: var(--cyan);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+  }
+  .kpi-badges {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .kpi-badge {
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 7rem 0; }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: rgba(0,229,255,0.35); }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-icon {
+    width: 44px; height: 44px;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    color: var(--cyan);
+    margin-bottom: 1.25rem;
+  }
+  .project-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .project-section {
+    margin-bottom: 0.75rem;
+  }
+  .project-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 0.3rem;
+  }
+  .project-section p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .project-result {
+    background: rgba(57,255,20,0.06);
+    border: 1px solid rgba(57,255,20,0.15);
+    border-radius: 2px;
+    padding: 0.6rem 0.85rem;
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--green);
+  }
+  .project-result i { margin-right: 0.4rem; }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { padding: 7rem 0; background: var(--bg2); }
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .cert-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.4rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: all 0.3s;
+  }
+  .cert-card:hover {
+    border-color: rgba(0,229,255,0.4);
+    transform: translateY(-3px);
+  }
+  .cert-icon {
+    width: 38px; height: 38px; flex-shrink: 0;
+    background: rgba(0,229,255,0.08);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    color: var(--cyan);
+  }
+  .cert-info {}
+  .cert-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    line-height: 1.4;
+  }
+  .cert-issuer {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cert-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ── FORMATION ── */
+  #education { padding: 7rem 0; }
+  .edu-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    transition: all 0.3s;
+  }
+  .edu-card:hover { border-color: rgba(0,229,255,0.35); }
+  .edu-icon { font-size: 1.5rem; color: var(--cyan); }
+  .edu-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+  .edu-school { font-size: 0.85rem; color: var(--muted); }
+  .edu-year {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--cyan);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── LANGUAGES ── */
+  #languages { padding: 5rem 0; background: var(--bg2); }
+  .lang-grid {
+    display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+  }
+  .lang-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem 3rem;
+    text-align: center;
+    min-width: 200px;
+    transition: all 0.3s;
+  }
+  .lang-card:hover { border-color: rgba(0,229,255,0.4); transform: translateY(-3px); }
+  .lang-flag { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .lang-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+  .lang-level {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .lang-dots { display: flex; gap: 4px; justify-content: center; margin-top: 0.75rem; }
+  .lang-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cyan);
+    opacity: 0.2;
+  }
+  .lang-dot.active { opacity: 1; }
+
+  /* ── CONTACT ── */
+  #contact { padding: 7rem 0; }
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-info {}
+  .contact-intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+  }
+  .contact-link:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateX(4px);
+  }
+  .contact-link i {
+    width: 20px;
+    color: var(--cyan);
+    font-size: 1rem;
+    text-align: center;
+  }
+  .contact-link-text {}
+  .contact-link-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .contact-link-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--cyan2));
+  }
+  .contact-card h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+  .contact-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.75rem;
+  }
+  .availability {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--green);
+  }
+  .avail-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+  .location-tag {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+  .location-tag i { color: var(--cyan); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    position: relative; z-index: 1;
+  }
+  footer span { color: var(--cyan); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .fade-in {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-photo-frame { max-width: 220px; margin-bottom: 2rem; }
+    .contact-wrapper { grid-template-columns: 1fr; }
+    .edu-card { grid-template-columns: auto 1fr; }
+    .edu-year { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .container { padding: 0 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">CA // IT Specialist</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Expériences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div>
+    <div class="hero-tag">&#x2022; Disponible pour de nouvelles opportunités</div>
+    <h1 class="hero-name">Coulibaly<br>Alassane</h1>
+    <p class="hero-title">IT Support Specialist &nbsp;|&nbsp; <span>Infrastructure & Operations</span> &nbsp;|&nbsp; Abidjan, CI</p>
+    <p class="hero-tagline">Je maintiens vos systèmes opérationnels 24/7 — parce qu'une infrastructure qui ne tombe pas, c'est un business qui ne s'arrête pas.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary"><i class="fa fa-paper-plane"></i> Me contacter</a>
+      <a href="#experience" class="btn-outline"><i class="fa fa-terminal"></i> Voir mes expériences</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num" data-count="6">0</span>
+        <span class="stat-label">Ans d'expérience</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="3">0</span>
+        <span class="stat-label">Entreprises majeures</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="10">0</span>
+        <span class="stat-label">Certifications</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="2">0</span>
+        <span class="stat-label">Niveaux support N1 & N2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-photo-frame">
+          <i class="fa fa-user-tie"></i>
+          <div class="about-badge">+6 Ans Expérience</div>
+        </div>
+      </div>
+      <div class="about-text fade-in">
+        <div class="sec-tag">// Profil stratégique</div>
+        <h2 class="sec-title" style="text-align:left; margin-bottom:1.25rem;">À propos de moi</h2>
+        <p>Spécialiste IT avec <strong>plus de 6 ans d'expérience</strong> en support utilisateurs, administration d'infrastructure et exploitation des systèmes d'information, j'interviens sur des environnements exigeants où la continuité de service est non négociable.</p>
+        <p>Passé par des environnements bancaires (ADEAL S.A), industriels (EGCO SARL) et institutionnels (BNETD), j'ai développé une double expertise <strong>technique et opérationnelle</strong> : gestion de parc, supervision des incidents, déploiements réseau et administration Active Directory.</p>
+        <p>Rigoureux, autonome et orienté <strong>résolution de problèmes</strong>, j'applique les bonnes pratiques ITIL pour maintenir des SLA élevés tout en sensibilisant les équipes à la sécurité des systèmes d'information.</p>
+        <div class="about-highlights">
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Support N1 & N2</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Active Directory & Windows Server</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Gestion de parc informatique</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Réseaux VLAN / OSPF / EIGRP</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Méthode ITIL / ITSM</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Cybersécurité & bonnes pratiques</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> SQL & reporting</div>
+          <div class="highlight-item"><i class="fa fa-check-circle"></i> Coordination prestataires IT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Compétences techniques</span>
+      <h2 class="sec-title">Expertise par domaine</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-category fade-in">
+        <div class="skill-cat-title"><i class="fa fa-headset"></i> Support & Exploitation</div>
+        <div class="skill-bar-list">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Support utilisateurs N1 & N2</span><span>95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Gestion de parc informatique</span><span>90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Ticketing & ITSM (IT Maint)</span><span>88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Monitoring systèmes & apps</span><span>85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category fade-in">
+        <div class="skill-cat-title"><i class="fa fa-server"></i> Infrastructure & Réseaux</div>
+        <div class="skill-bar-list">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Active Directory & Windows Server</span><span>88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Réseaux VLAN / OSPF / EIGRP</span><span>82%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Équipements HP / Cisco</span><span>80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Téléphonie Autocom</span><span>75%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category fade-in">
+        <div class="skill-cat-title"><i class="fa fa-shield-halved"></i> Sécurité & Données</div>
+        <div class="skill-bar-list">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Sécurité poste de travail</span><span>85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Cryptographie & sécurité réseau</span><span>78%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>Requêtes SQL & reporting</span><span>82%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label"><span>PowerShell & scripting</span><span>70%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── STACK ── -->
+<section id="stack">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Outils & Technologies</span>
+      <h2 class="sec-title">Stack technique maîtrisée</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card fade-in"><i class="fa fa-windows"></i><span>Windows Server</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-users-gear"></i><span>Active Directory</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-network-wired"></i><span>Cisco / HP Réseau</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-database"></i><span>SQL Server</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-linux"></i><span>Linux / Ubuntu</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-terminal"></i><span>PowerShell</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-globe"></i><span>VLAN / OSPF / EIGRP</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-ticket"></i><span>IT Maint (ITSM)</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-print"></i><span>Imprimantes / Traceurs</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-phone-volume"></i><span>Téléphonie Autocom</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-file-excel"></i><span>Excel / Microsoft 365</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-robot"></i><span>ChatGPT / IA Prod.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Parcours professionnel</span>
+      <h2 class="sec-title">Expériences & réalisations</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Oct. 2023 — Aujourd'hui · ADEAL S.A (Secteur Bancaire)</div>
+        <div class="timeline-company">ADEAL S.A</div>
+        <div class="timeline-role">Spécialiste Support IT — Assistant Informatique</div>
+        <div class="timeline-achievements">
+          <div class="achievement">Assuré le support technique N1 & N2 pour l'ensemble du parc utilisateurs, maintenant un taux de résolution d'incidents élevé conforme aux SLA définis.</div>
+          <div class="achievement">Géré et maintenu le parc informatique (matériels et logiciels), en assurant la traçabilité des équipements et le contrôle des stocks.</div>
+          <div class="achievement">Réalisé les traitements quotidiens bancaires (cut-off, check-lists, extractions) et produit des rapports périodiques via requêtes SQL pour la direction.</div>
+          <div class="achievement">Administré le suivi des tickets via IT Maint — coordination des incidents, escalades et clôtures dans les délais impartis.</div>
+          <div class="achievement">Coordonné les prestataires IT (acquisitions, déploiements, maintenance) et participé à des projets de déploiement de solutions applicatives.</div>
+          <div class="achievement">Sensibilisé les collaborateurs aux bonnes pratiques de cybersécurité, réduisant les risques d'incidents liés aux erreurs humaines.</div>
+        </div>
+        <div class="kpi-badges">
+          <span class="kpi-badge">Support N1 & N2</span>
+          <span class="kpi-badge">SLA respectés</span>
+          <span class="kpi-badge">SQL reporting</span>
+          <span class="kpi-badge">ITSM / IT Maint</span>
+          <span class="kpi-badge">Secteur bancaire</span>
+          <span class="kpi-badge">Cybersécurité</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Sept. 2020 — Oct. 2023 · EGCO SARL</div>
+        <div class="timeline-company">EGCO SARL</div>
+        <div class="timeline-role">Assistant Informatique</div>
+        <div class="timeline-achievements">
+          <div class="achievement">Installé, configuré et déployé des équipements informatiques pour l'ensemble des postes de travail de l'entreprise.</div>
+          <div class="achievement">Diagnostiqué et résolu les incidents logiciels et matériels, en réduisant les temps d'arrêt opérationnels des utilisateurs.</div>
+          <div class="achievement">Géré les acquisitions d'équipements IT : sélection fournisseurs, commandes et suivi budgétaire.</div>
+          <div class="achievement">Assuré la continuité de service pour les systèmes et réseaux internes, garantissant la disponibilité des ressources IT.</div>
+        </div>
+        <div class="kpi-badges">
+          <span class="kpi-badge">3 ans de mission</span>
+          <span class="kpi-badge">Déploiement équipements</span>
+          <span class="kpi-badge">Gestion achats IT</span>
+          <span class="kpi-badge">Maintenance corrective</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Mars 2017 — 2020 · BNETD — Bureau National d'Étude Technique et de Développement</div>
+        <div class="timeline-company">BNETD</div>
+        <div class="timeline-role">Technicien Support Informatique N1 & N2</div>
+        <div class="timeline-achievements">
+          <div class="achievement">Résolu les incidents de connexion, d'impression (imprimantes, traceurs) et de configuration des pilotes pour les agents de l'institution.</div>
+          <div class="achievement">Effectué la mise en route et l'optimisation des nouveaux équipements informatiques dans le parc institutionnel.</div>
+          <div class="achievement">Fourni une assistance multicanal (téléphone, email, présentiel) pour les utilisateurs, assurant une prise en charge rapide des incidents.</div>
+          <div class="achievement">Installé et configuré les terminaux utilisateurs et assuré les travaux de maintenance préventive et corrective.</div>
+        </div>
+        <div class="kpi-badges">
+          <span class="kpi-badge">Institution publique</span>
+          <span class="kpi-badge">Support multicanal</span>
+          <span class="kpi-badge">Maintenance préventive</span>
+          <span class="kpi-badge">3 ans</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Réalisations clés</span>
+      <h2 class="sec-title">Projets techniques majeurs</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card fade-in">
+        <div class="project-icon"><i class="fa fa-building-columns"></i></div>
+        <div class="project-title">Mise en place du support IT dans un environnement bancaire</div>
+        <div class="project-section">
+          <div class="project-section-label">Contexte</div>
+          <p>Environnement bancaire critique (ADEAL S.A) nécessitant un support applicatif et technique rigoureux avec traçabilité complète des incidents.</p>
+        </div>
+        <div class="project-section">
+          <div class="project-section-label">Actions</div>
+          <p>Mise en place du suivi des tickets via IT Maint, production de rapports SQL quotidiens, gestion des cut-off bancaires et coordination des prestataires IT.</p>
+        </div>
+        <div class="project-result"><i class="fa fa-arrow-trend-up"></i> Support opérationnel 5j/7 — SLA maintenus — Zéro interruption critique non résolue</div>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-icon"><i class="fa fa-network-wired"></i></div>
+        <div class="project-title">Déploiement & configuration réseau multi-sites</div>
+        <div class="project-section">
+          <div class="project-section-label">Contexte</div>
+          <p>Nécessité de déployer et configurer des équipements réseau (switches HP/Cisco, VLAN) dans un parc informatique en expansion.</p>
+        </div>
+        <div class="project-section">
+          <div class="project-section-label">Actions</div>
+          <p>Configuration des VLAN, routage OSPF/EIGRP, déploiement des équipements HP et Cisco, tests de connectivité et documentation technique.</p>
+        </div>
+        <div class="project-result"><i class="fa fa-arrow-trend-up"></i> Infrastructure réseau stable — latence réduite — connectivité inter-services optimisée</div>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-icon"><i class="fa fa-shield-halved"></i></div>
+        <div class="project-title">Programme de sensibilisation cybersécurité</div>
+        <div class="project-section">
+          <div class="project-section-label">Contexte</div>
+          <p>Incidents récurrents liés aux mauvaises pratiques des utilisateurs (phishing, mots de passe faibles, usage de supports amovibles non sécurisés).</p>
+        </div>
+        <div class="project-section">
+          <div class="project-section-label">Actions</div>
+          <p>Conception et animation de sessions de sensibilisation, diffusion de guides de bonnes pratiques, mise en place de politiques de mots de passe via Active Directory.</p>
+        </div>
+        <div class="project-result"><i class="fa fa-arrow-trend-up"></i> Réduction significative des incidents liés aux comportements utilisateurs — conformité renforcée</div>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-icon"><i class="fa fa-chart-line"></i></div>
+        <div class="project-title">Automatisation des extractions & rapports SQL</div>
+        <div class="project-section">
+          <div class="project-section-label">Contexte</div>
+          <p>Production manuelle chronophage de rapports et statistiques pour la direction informatique — risques d'erreurs et délais trop longs.</p>
+        </div>
+        <div class="project-section">
+          <div class="project-section-label">Actions</div>
+          <p>Développement de requêtes SQL structurées pour l'extraction automatisée des données, création de modèles de rapports périodiques standardisés.</p>
+        </div>
+        <div class="project-result"><i class="fa fa-arrow-trend-up"></i> Temps de reporting réduit — fiabilité des données améliorée — livrables ponctuels à la direction</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS ── -->
+<section id="certifications">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Développement continu</span>
+      <h2 class="sec-title">Certifications & Formations continues</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="cert-grid">
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fab fa-google"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Google IT Support Professional Certificate</div>
+          <div class="cert-issuer">Google / Coursera</div>
+          <div class="cert-date">Déc. 2024 – Mars 2025</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-lock"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">IT Security: Defense against the digital dark arts</div>
+          <div class="cert-issuer">Google / Coursera</div>
+          <div class="cert-date">Mars 2025</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-server"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">System Administration & IT Infrastructure Services</div>
+          <div class="cert-issuer">Google / Coursera</div>
+          <div class="cert-date">Févr. 2025</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-terminal"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Operating Systems: Becoming a Power User</div>
+          <div class="cert-issuer">Google / Coursera</div>
+          <div class="cert-date">Janv. 2025</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-network-wired"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">The Bits and Bytes of Computer Networking</div>
+          <div class="cert-issuer">Google / Coursera</div>
+          <div class="cert-date">Déc. 2024</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-flag"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Secnum Academie — Panorama SSI, Authentification, Sécurité Internet, Nomadisme</div>
+          <div class="cert-issuer">ANSSI — France</div>
+          <div class="cert-date">Août 2024</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-robot"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Objectif IA — Initiez-vous à l'intelligence artificielle</div>
+          <div class="cert-issuer">Institut Montaigne / OpenClassrooms</div>
+          <div class="cert-date">Oct. 2024</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-shield-virus"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Découvrez l'univers de la cybersécurité</div>
+          <div class="cert-issuer">OpenClassrooms</div>
+          <div class="cert-date">Août 2024</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-wand-magic-sparkles"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Utilisez ChatGPT pour améliorer votre productivité</div>
+          <div class="cert-issuer">OpenClassrooms</div>
+          <div class="cert-date">Avril 2024</div>
+        </div>
+      </div>
+
+      <div class="cert-card fade-in">
+        <div class="cert-icon"><i class="fa fa-file-excel"></i></div>
+        <div class="cert-info">
+          <div class="cert-name">Maîtrisez les fondamentaux d'Excel 2016</div>
+          <div class="cert-issuer">OpenClassrooms</div>
+          <div class="cert-date">Févr. 2020</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Formation académique</span>
+      <h2 class="sec-title">Diplômes & Formation</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="edu-list">
+      <div class="edu-card fade-in">
+        <div class="edu-icon"><i class="fa fa-graduation-cap"></i></div>
+        <div>
+          <div class="edu-name">Licence en Réseaux et Sécurité Informatique — Bac+3</div>
+          <div class="edu-school">UVCI — Université Virtuelle de Côte d'Ivoire</div>
+        </div>
+        <div class="edu-year">2019 – 2021</div>
+      </div>
+      <div class="edu-card fade-in">
+        <div class="edu-icon"><i class="fa fa-award"></i></div>
+        <div>
+          <div class="edu-name">BTS en Réseau Informatique et Télécommunications — Bac+2</div>
+          <div class="edu-school">ITES 2 Plateaux — Abidjan</div>
+        </div>
+        <div class="edu-year">2014 – 2016</div>
+      </div>
+      <div class="edu-card fade-in">
+        <div class="edu-icon"><i class="fa fa-school"></i></div>
+        <div>
+          <div class="edu-name">Baccalauréat Série C (Sciences)</div>
+          <div class="edu-school">Lycée Moderne d'Odienné</div>
+        </div>
+        <div class="edu-year">2011 – 2014</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LANGUAGES ── -->
+<section id="languages">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Communication</span>
+      <h2 class="sec-title">Langues</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="lang-grid">
+      <div class="lang-card fade-in">
+        <div class="lang-flag">🇫🇷</div>
+        <div class="lang-name">Français</div>
+        <div class="lang-level">Langue maternelle</div>
+        <div class="lang-dots">
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+        </div>
+      </div>
+      <div class="lang-card fade-in">
+        <div class="lang-flag">🇬🇧</div>
+        <div class="lang-name">Anglais</div>
+        <div class="lang-level">Intermédiaire (professionnel)</div>
+        <div class="lang-dots">
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot"></div>
+          <div class="lang-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// Restons en contact</span>
+      <h2 class="sec-title">Me contacter</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="contact-wrapper">
+      <div class="contact-info fade-in">
+        <p class="contact-intro">Vous avez un projet, une opportunité ou souhaitez simplement échanger sur les sujets IT ? Je suis ouvert à toute discussion sérieuse.</p>
+        <div class="contact-links">
+          <a href="tel:+22507786274 60" class="contact-link">
+            <i class="fa fa-phone"></i>
+            <div class="contact-link-text">
+              <span class="contact-link-label">Téléphone</span>
+              <span class="contact-link-value">+225 07 78 62 74 60</span>
+            </div>
+          </a>
+          <a href="mailto:alassanecool37@gmail.com" class="contact-link">
+            <i class="fa fa-envelope"></i>
+            <div class="contact-link-text">
+              <span class="contact-link-label">Email</span>
+              <span class="contact-link-value">alassanecool37@gmail.com</span>
+            </div>
+          </a>
+          <a href="https://www.linkedin.com/in/coulibalyalassane-259460145" target="_blank" class="contact-link">
+            <i class="fab fa-linkedin"></i>
+            <div class="contact-link-text">
+              <span class="contact-link-label">LinkedIn</span>
+              <span class="contact-link-value">Coulibaly Alassane</span>
+            </div>
+          </a>
+          <div class="contact-link" style="cursor:default;">
+            <i class="fa fa-car"></i>
+            <div class="contact-link-text">
+              <span class="contact-link-label">Mobilité</span>
+              <span class="contact-link-value">Permis ABCDE — Mobile</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-card fade-in">
+        <h3>Prêt pour de nouveaux défis IT</h3>
+        <p>Ouvert aux opportunités en CDI, CDD ou mission de conseil dans le domaine du support IT, de l'infrastructure ou de la cybersécurité.</p>
+        <div class="availability">
+          <div class="avail-dot"></div>
+          Disponible dès maintenant
+        </div>
+        <div class="location-tag"><i class="fa fa-location-dot"></i> Abidjan, Côte d'Ivoire — Ouvert à la mobilité internationale</div>
+        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+          <div class="sec-tag" style="text-align:left; margin-bottom:0.75rem;">Points forts à retenir</div>
+          <div class="timeline-achievements" style="margin:0;">
+            <div class="achievement">+6 ans d'expérience en support IT dans des secteurs exigeants</div>
+            <div class="achievement">Certifié Google IT Support Professional (2025)</div>
+            <div class="achievement">Maîtrise ITIL, Active Directory, réseaux Cisco/HP</div>
+            <div class="achievement">Profil bilingue (FR/EN), autonome et orienté résultats</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2025 <span>Coulibaly Alassane</span> — IT Support Specialist · Abidjan, Côte d'Ivoire</p>
+  <p style="margin-top:0.4rem;">Conçu avec précision · Propulsé par la passion IT</p>
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+  // Intersection Observer — fade-in & timeline
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in, .timeline-item').forEach(el => observer.observe(el));
+
+  // Skill bars animation
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skill-category').forEach(el => barObserver.observe(el));
+
+  // Counter animation
+  function animateCount(el, target) {
+    let start = 0;
+    const duration = 1800;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      el.textContent = Math.floor(progress * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        animateCount(el, parseInt(el.dataset.count));
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-num[data-count]').forEach(el => statObserver.observe(el));
+</script>
+
+</body>
+</html>
