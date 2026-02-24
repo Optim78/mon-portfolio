@@ -7,39 +7,92 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<!-- GoatCounter Analytics -->
 <script data-goatcounter="https://optim.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
+/* ── VARIABLES ── */
 :root{
   --bg:#050d1a;--bg2:#07111f;--bg3:#0a1828;
   --cyan:#00e5ff;--cyan2:#00b4d8;--green:#39ff14;--amber:#ffb700;
   --text:#ddeeff;--muted:#5a7a99;--border:rgba(0,229,255,0.1);
   --card:rgba(7,17,31,0.9);--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--r:6px;
 }
+body.light{
+  --bg:#f0f4f8;--bg2:#e2eaf4;--bg3:#d4e0ef;
+  --text:#0d1f33;--muted:#4a6a8a;--border:rgba(0,150,200,0.15);
+  --card:rgba(255,255,255,0.9);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;overflow-x:hidden;cursor:none;transition:background 0.4s,color 0.4s}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 body::before{content:'';position:fixed;inset:0;z-index:0;
   background-image:linear-gradient(rgba(0,229,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.02) 1px,transparent 1px);
-  background-size:50px 50px;pointer-events:none}
+  background-size:50px 50px;pointer-events:none;transition:opacity 0.4s}
+body.light::before{opacity:0.3}
 
-/* NAV */
+/* ── LOADER ── */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:#050d1a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  transition:opacity 0.6s ease;
+}
+#loader.hide{opacity:0;pointer-events:none}
+.loader-initials{
+  font-family:var(--mono);font-size:4rem;font-weight:700;
+  background:linear-gradient(135deg,#fff 20%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:pulse-scale 1s ease infinite alternate;
+}
+@keyframes pulse-scale{from{transform:scale(1)}to{transform:scale(1.05)}}
+.loader-bar-track{width:200px;height:2px;background:rgba(0,229,255,0.1);border-radius:2px;overflow:hidden}
+.loader-bar-fill{height:100%;background:linear-gradient(90deg,var(--cyan2),var(--cyan));width:0;animation:load-fill 1.8s ease forwards}
+@keyframes load-fill{to{width:100%}}
+.loader-text{font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase}
+
+/* ── READ PROGRESS ── */
+#read-progress{position:fixed;top:0;left:0;z-index:999;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green));width:0%;transition:width 0.1s linear}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--cyan);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.2s,height 0.2s;box-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,229,255,0.3)}
+#cursor-trail{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,229,255,0.4);pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:left 0.12s ease,top 0.12s ease}
+body.light #cursor{background:var(--cyan2);box-shadow:0 0 10px var(--cyan2)}
+
+/* ── BACK TO TOP ── */
+#back-top{
+  position:fixed;bottom:2rem;right:2rem;z-index:100;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--cyan);color:var(--bg);
+  border:none;cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(20px);pointer-events:none;
+  transition:all 0.3s;box-shadow:0 4px 20px rgba(0,229,255,0.35);
+}
+#back-top.show{opacity:1;transform:translateY(0);pointer-events:all}
+#back-top:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,229,255,0.5)}
+
+/* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;
-  padding:1rem 3rem;background:rgba(5,13,26,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:padding 0.3s}
-nav.scrolled{padding:0.6rem 3rem;box-shadow:0 4px 30px rgba(0,0,0,0.5)}
+  padding:1rem 3rem;background:rgba(5,13,26,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:padding 0.3s,background 0.4s}
+body.light nav{background:rgba(240,244,248,0.92)}
+nav.scrolled{padding:0.6rem 3rem;box-shadow:0 4px 30px rgba(0,0,0,0.3)}
 .nav-logo{font-family:var(--mono);font-size:0.82rem;color:var(--cyan);letter-spacing:0.2em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem}
 .nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.nav-right{display:flex;align-items:center;gap:1.5rem}
-.nav-links{display:flex;gap:1.75rem;list-style:none}
-.nav-links a{font-family:var(--mono);font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.3s;position:relative}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:0.68rem;color:var(--muted);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.3s;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
 .nav-links a:hover{color:var(--cyan)}
 .nav-links a:hover::after{transform:scaleX(1)}
+.nav-cv-btn{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;padding:0.45rem 1rem;border-radius:var(--r);border:1px solid var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06);transition:all 0.3s;white-space:nowrap}
+.nav-cv-btn:hover{background:var(--cyan);color:var(--bg)}
 
-/* LANG TOGGLE */
-.lang-toggle{display:flex;align-items:center;background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.2);border-radius:20px;padding:3px;gap:2px;cursor:pointer}
+/* THEME + LANG TOGGLE */
+.nav-controls{display:flex;align-items:center;gap:0.75rem}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:rgba(0,229,255,0.06);color:var(--cyan);cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.theme-btn:hover{background:var(--cyan);color:var(--bg)}
+.lang-toggle{display:flex;align-items:center;background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.2);border-radius:20px;padding:3px;gap:2px}
 .lang-btn{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;padding:0.25rem 0.65rem;border-radius:16px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.3s;text-transform:uppercase}
 .lang-btn.active{background:var(--cyan);color:var(--bg);font-weight:700}
 
@@ -49,8 +102,6 @@ nav.scrolled{padding:0.6rem 3rem;box-shadow:0 4px 30px rgba(0,0,0,0.5)}
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
 .hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
 .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-
-/* MOBILE MENU */
 .mobile-menu{position:fixed;inset:0;z-index:150;background:rgba(5,13,26,0.98);backdrop-filter:blur(20px);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
   opacity:0;pointer-events:none;transition:opacity 0.35s}
@@ -65,20 +116,27 @@ nav.scrolled{padding:0.6rem 3rem;box-shadow:0 4px 30px rgba(0,0,0,0.5)}
 section{position:relative;z-index:1}
 .container{max-width:1100px;margin:0 auto;padding:0 2rem}
 
-/* HERO */
+/* ── HERO ── */
 #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:6rem 2rem 4rem;position:relative}
 .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;width:100%}
 .hero-tag{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,229,255,0.3);padding:0.35rem 1rem;border-radius:2px;margin-bottom:1.5rem;animation:fadeUp 0.8s ease both}
 .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.5s infinite}
 .hero-name{font-size:clamp(2.8rem,6vw,5rem);font-weight:900;letter-spacing:-0.03em;line-height:1;background:linear-gradient(135deg,#fff 20%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeUp 0.9s ease 0.1s both;margin-bottom:0.5rem}
+body.light .hero-name{background:linear-gradient(135deg,#0d1f33 20%,var(--cyan2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-title{font-family:var(--mono);font-size:clamp(0.78rem,1.5vw,0.95rem);color:var(--muted);margin-bottom:1.5rem;animation:fadeUp 0.9s ease 0.2s both}
 .hero-title .hl{color:var(--cyan)}
-.hero-desc{font-size:1.05rem;font-weight:400;color:#8aabcc;max-width:480px;margin-bottom:2rem;line-height:1.8;animation:fadeUp 0.9s ease 0.3s both}
+/* TYPEWRITER */
+.typewriter-wrap{font-size:1.05rem;font-weight:400;color:#8aabcc;max-width:480px;margin-bottom:2rem;line-height:1.8;animation:fadeUp 0.9s ease 0.3s both;min-height:80px}
+body.light .typewriter-wrap{color:#4a6a8a}
+#typewriter{border-right:2px solid var(--cyan);padding-right:2px;animation:cursor-blink 0.8s step-end infinite}
+@keyframes cursor-blink{0%,100%{border-color:var(--cyan)}50%{border-color:transparent}}
 .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 0.9s ease 0.4s both}
 .btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--cyan);color:var(--bg);font-family:var(--mono);font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;padding:0.8rem 1.75rem;border-radius:var(--r);transition:all 0.3s;border:2px solid var(--cyan)}
 .btn-primary:hover{background:transparent;color:var(--cyan);box-shadow:0 0 24px rgba(0,229,255,0.25)}
 .btn-outline{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--text);font-family:var(--mono);font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;padding:0.8rem 1.75rem;border-radius:var(--r);border:2px solid rgba(255,255,255,0.12);transition:all 0.3s}
 .btn-outline:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-cv{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,183,0,0.1);color:var(--amber);font-family:var(--mono);font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;padding:0.8rem 1.75rem;border-radius:var(--r);border:2px solid rgba(255,183,0,0.35);transition:all 0.3s}
+.btn-cv:hover{background:var(--amber);color:var(--bg)}
 .hero-right{display:flex;justify-content:center;align-items:center;animation:fadeUp 0.9s ease 0.2s both}
 .photo-wrapper{position:relative;width:320px;height:320px}
 .photo-ring{position:absolute;inset:-12px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg,var(--cyan),transparent,var(--cyan2)) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;animation:spin 8s linear infinite}
@@ -92,13 +150,14 @@ section{position:relative;z-index:1}
 .stat-num{display:block;font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--cyan);line-height:1}
 .stat-label{font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem}
 
-/* SECTION HEADERS */
+/* ── SECTION HEADERS ── */
 .sec-header{text-align:center;margin-bottom:3.5rem}
 .sec-tag{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:0.75rem}
 .sec-title{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.02em;color:#fff}
+body.light .sec-title{color:#0d1f33}
 .sec-line{width:48px;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);margin:1rem auto 0}
 
-/* ABOUT */
+/* ── ABOUT ── */
 #about{padding:7rem 0}
 .about-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:center}
 .about-photo-box{position:relative;max-width:300px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
@@ -106,13 +165,39 @@ section{position:relative;z-index:1}
 .about-photo-box::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,13,26,0.6) 0%,transparent 50%);z-index:1;border-radius:12px}
 .about-label{position:absolute;bottom:1rem;left:1rem;z-index:2;font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase}
 .about-text p{color:#7a9bbf;margin-bottom:1.1rem;font-size:0.97rem;line-height:1.85}
+body.light .about-text p{color:#4a6a8a}
 .about-text p strong{color:var(--text);font-weight:600}
 .about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:1.5rem}
 .hl-item{display:flex;align-items:center;gap:0.5rem;font-size:0.83rem;color:var(--muted);padding:0.5rem 0.75rem;background:rgba(0,229,255,0.04);border:1px solid var(--border);border-radius:var(--r);transition:all 0.3s}
 .hl-item:hover{border-color:rgba(0,229,255,0.3);color:var(--text)}
 .hl-item i{color:var(--cyan);font-size:0.7rem;flex-shrink:0}
 
-/* SKILLS */
+/* ── KEY NUMBERS ── */
+#keynumbers{padding:5rem 0;background:var(--bg2)}
+.kn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem}
+.kn-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem 1.25rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.kn-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transition:transform 0.4s}
+.kn-card:hover{transform:translateY(-5px);border-color:rgba(0,229,255,0.3)}
+.kn-card:hover::before{transform:scaleX(1)}
+.kn-icon{font-size:1.6rem;margin-bottom:0.75rem;display:block}
+.kn-num{display:block;font-family:var(--mono);font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1;margin-bottom:0.35rem}
+.kn-label{font-size:0.78rem;color:var(--muted);line-height:1.4}
+
+/* ── CAN DO ── */
+#cando{padding:7rem 0}
+.cando-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.cando-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;transition:all 0.3s;position:relative;overflow:hidden;text-align:center}
+.cando-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,0.03),transparent);opacity:0;transition:opacity 0.3s}
+.cando-card:hover{transform:translateY(-6px);border-color:rgba(0,229,255,0.35)}
+.cando-card:hover::after{opacity:1}
+.cando-icon{width:60px;height:60px;border-radius:50%;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--cyan);margin:0 auto 1.25rem}
+.cando-title{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:0.75rem}
+body.light .cando-title{color:#0d1f33}
+.cando-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.25rem}
+.cando-tags{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center}
+.cando-tag{font-family:var(--mono);font-size:0.62rem;color:var(--cyan);border:1px solid rgba(0,229,255,0.15);padding:0.2rem 0.55rem;border-radius:2px}
+
+/* ── SKILLS ── */
 #skills{padding:7rem 0;background:var(--bg2)}
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
 .skill-cat{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;backdrop-filter:blur(8px);transition:all 0.3s}
@@ -125,7 +210,7 @@ section{position:relative;z-index:1}
 .skill-track{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
 .skill-fill{height:100%;background:linear-gradient(90deg,var(--cyan2),var(--cyan));border-radius:2px;width:0;transition:width 1.3s cubic-bezier(0.4,0,0.2,1)}
 
-/* STACK */
+/* ── STACK ── */
 #stack{padding:7rem 0}
 .stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem}
 .stack-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 0.75rem;text-align:center;transition:all 0.3s;cursor:default}
@@ -133,12 +218,13 @@ section{position:relative;z-index:1}
 .stack-card i{font-size:1.5rem;color:var(--cyan);margin-bottom:0.6rem;display:block}
 .stack-card span{font-family:var(--mono);font-size:0.66rem;color:var(--muted);display:block;line-height:1.4}
 
-/* ENTREPRENEUR */
+/* ── ENTREPRENEUR ── */
 #entrepreneur{padding:7rem 0;background:var(--bg2)}
 .entrep-card{background:var(--card);border:1px solid rgba(0,229,255,0.2);border-radius:var(--r);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden}
 .entrep-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--amber),var(--cyan))}
 .entrep-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,183,0,0.1);border:1px solid rgba(255,183,0,0.3);color:var(--amber);font-family:var(--mono);font-size:0.7rem;padding:0.35rem 0.9rem;border-radius:2px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.25rem}
 .entrep-title{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem;line-height:1.3}
+body.light .entrep-title{color:#0d1f33}
 .entrep-sub{font-family:var(--mono);font-size:0.78rem;color:var(--cyan);margin-bottom:1.25rem;letter-spacing:0.08em}
 .entrep-desc{font-size:0.92rem;color:#7a9bbf;line-height:1.8;margin-bottom:1.5rem}
 .entrep-stats{display:flex;gap:2rem;flex-wrap:wrap}
@@ -151,7 +237,7 @@ section{position:relative;z-index:1}
 .entrep-link{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;color:var(--amber);font-family:var(--mono);font-size:0.75rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s;border-bottom:1px solid rgba(255,183,0,0.3);padding-bottom:2px}
 .entrep-link:hover{color:#fff;border-color:#fff}
 
-/* EXPERIENCE */
+/* ── EXPERIENCE ── */
 #experience{padding:7rem 0}
 .timeline{position:relative;padding-left:1.5rem}
 .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--cyan) 20%,var(--cyan) 80%,transparent)}
@@ -160,6 +246,7 @@ section{position:relative;z-index:1}
 .t-dot{position:absolute;left:-1.5rem;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);box-shadow:0 0 12px rgba(0,229,255,0.5)}
 .t-meta{font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.4rem}
 .t-company{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+body.light .t-company{color:#0d1f33}
 .t-role{font-size:0.86rem;color:var(--muted);margin-bottom:1.2rem}
 .t-achievements{display:flex;flex-direction:column;gap:0.55rem}
 .achiev{display:flex;align-items:flex-start;gap:0.7rem;font-size:0.88rem;color:var(--text);line-height:1.6}
@@ -167,7 +254,7 @@ section{position:relative;z-index:1}
 .kpi-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}
 .kpi{background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.18);color:var(--cyan);font-family:var(--mono);font-size:0.67rem;padding:0.22rem 0.6rem;border-radius:2px;letter-spacing:0.07em}
 
-/* PROJECTS */
+/* ── PROJECTS ── */
 #projects{padding:7rem 0;background:var(--bg2)}
 .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
 .proj-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;transition:all 0.3s;position:relative;overflow:hidden}
@@ -176,16 +263,29 @@ section{position:relative;z-index:1}
 .proj-card:hover::after{transform:scaleX(1)}
 .proj-ico{width:42px;height:42px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.18);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--cyan);margin-bottom:1.2rem}
 .proj-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:1rem;line-height:1.4}
+body.light .proj-title{color:#0d1f33}
 .proj-sec-lbl{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.3rem}
 .proj-sec-txt{font-size:0.83rem;color:var(--muted);line-height:1.6;margin-bottom:0.75rem}
 .proj-result{background:rgba(57,255,20,0.05);border:1px solid rgba(57,255,20,0.12);border-radius:4px;padding:0.55rem 0.8rem;font-family:var(--mono);font-size:0.75rem;color:var(--green);margin-top:0.5rem}
-.proj-result i{margin-right:0.4rem}
 .proj-telecom .proj-ico{background:rgba(255,183,0,0.08);border-color:rgba(255,183,0,0.2)}
 .proj-telecom .proj-ico i{color:var(--amber)}
 .proj-telecom .proj-result{background:rgba(255,183,0,0.05);border-color:rgba(255,183,0,0.15);color:var(--amber)}
 
-/* CERTIFICATIONS */
-#certifications{padding:7rem 0}
+/* ── TESTIMONIALS ── */
+#testimonials{padding:7rem 0}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;transition:all 0.3s;position:relative}
+.testi-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-4px)}
+.testi-quote{font-size:2.5rem;color:var(--cyan);opacity:0.3;line-height:1;margin-bottom:0.75rem;font-family:Georgia,serif}
+.testi-text{font-size:0.92rem;color:var(--muted);line-height:1.8;font-style:italic;margin-bottom:1.5rem}
+.testi-author{display:flex;align-items:center;gap:0.85rem}
+.testi-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--cyan2),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.85rem;font-weight:700;color:var(--bg);flex-shrink:0}
+.testi-name{font-size:0.9rem;font-weight:700;color:var(--text)}
+.testi-role{font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:0.08em;text-transform:uppercase}
+.testi-stars{color:var(--amber);font-size:0.75rem;margin-bottom:0.5rem;letter-spacing:2px}
+
+/* ── CERTIFICATIONS ── */
+#certifications{padding:7rem 0;background:var(--bg2)}
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.1rem}
 .cert-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;display:flex;align-items:flex-start;gap:1rem;transition:all 0.3s}
 .cert-card:hover{border-color:rgba(0,229,255,0.35);transform:translateY(-3px)}
@@ -194,30 +294,32 @@ section{position:relative;z-index:1}
 .cert-issuer{font-family:var(--mono);font-size:0.64rem;color:var(--cyan);letter-spacing:0.08em;text-transform:uppercase}
 .cert-date{font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-top:0.15rem}
 
-/* EDUCATION */
-#education{padding:7rem 0;background:var(--bg2)}
+/* ── EDUCATION ── */
+#education{padding:7rem 0}
 .edu-list{display:flex;flex-direction:column;gap:1.1rem}
 .edu-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1.75rem;display:grid;grid-template-columns:auto 1fr auto;gap:1.25rem;align-items:center;transition:all 0.3s}
 .edu-card:hover{border-color:rgba(0,229,255,0.3)}
 .edu-ico{font-size:1.4rem;color:var(--cyan)}
 .edu-name{font-size:0.97rem;font-weight:700;color:#fff;margin-bottom:0.15rem}
+body.light .edu-name{color:#0d1f33}
 .edu-school{font-size:0.82rem;color:var(--muted)}
 .edu-yr{font-family:var(--mono);font-size:0.72rem;color:var(--cyan);white-space:nowrap}
 
-/* LANGUAGES */
-#languages{padding:5rem 0}
+/* ── LANGUAGES ── */
+#languages{padding:5rem 0;background:var(--bg2)}
 .lang-grid{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
 .lang-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem 2.5rem;text-align:center;min-width:180px;transition:all 0.3s}
 .lang-card:hover{border-color:rgba(0,229,255,0.4);transform:translateY(-3px)}
 .lang-flag{font-size:2.2rem;margin-bottom:0.6rem}
 .lang-name{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:0.35rem}
+body.light .lang-name{color:#0d1f33}
 .lang-lv{font-family:var(--mono);font-size:0.7rem;color:var(--cyan);letter-spacing:0.12em;text-transform:uppercase}
 .lang-dots{display:flex;gap:4px;justify-content:center;margin-top:0.65rem}
 .ldot{width:7px;height:7px;border-radius:50%;background:var(--cyan);opacity:0.15}
 .ldot.on{opacity:1}
 
-/* CONTACT */
-#contact{padding:7rem 0;background:var(--bg2)}
+/* ── CONTACT ── */
+#contact{padding:7rem 0}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
 .contact-intro{font-size:0.97rem;color:var(--muted);margin-bottom:2rem;line-height:1.85}
 .c-links{display:flex;flex-direction:column;gap:0.85rem}
@@ -242,22 +344,10 @@ section{position:relative;z-index:1}
 .c-pt{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.85rem;color:var(--text);margin-bottom:0.5rem;line-height:1.5}
 .c-pt::before{content:"▸";color:var(--cyan);flex-shrink:0;font-size:0.7rem;margin-top:0.2rem}
 
-/* FOOTER */
-.visitor-counter{
-  display:flex;justify-content:center;margin-bottom:1.5rem;
-}
-.vc-inner{
-  display:inline-flex;align-items:center;gap:1rem;
-  background:rgba(0,229,255,0.05);
-  border:1px solid rgba(0,229,255,0.2);
-  border-radius:50px;padding:0.6rem 1.75rem;
-  position:relative;overflow:hidden;
-}
-.vc-inner::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(0,229,255,0.05),transparent);
-  animation:shimmer 3s infinite;
-}
+/* ── VISITOR COUNTER ── */
+.visitor-counter{display:flex;justify-content:center;margin-bottom:1.5rem}
+.vc-inner{display:inline-flex;align-items:center;gap:1rem;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:50px;padding:0.6rem 1.75rem;position:relative;overflow:hidden}
+.vc-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.05),transparent);animation:shimmer 3s infinite}
 @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .vc-icon{font-size:1rem;color:var(--cyan)}
 .vc-text{display:flex;align-items:center;gap:0.75rem}
@@ -265,6 +355,8 @@ section{position:relative;z-index:1}
 .vc-num{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--cyan);min-width:60px}
 .vc-pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse2 2s infinite;flex-shrink:0}
 .vc-live-badge{font-family:var(--mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--green);border:1px solid rgba(57,255,20,0.3);padding:0.15rem 0.4rem;border-radius:2px;margin-left:0.25rem}
+
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:var(--mono);font-size:0.7rem;color:var(--muted);position:relative;z-index:1}
 footer span{color:var(--cyan)}
 
@@ -277,7 +369,7 @@ footer span{color:var(--cyan)}
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;text-align:center;gap:3rem}
   .hero-right{order:-1}
-  .hero-desc{margin:0 auto 2rem}
+  .typewriter-wrap{margin:0 auto 2rem}
   .hero-ctas{justify-content:center}
   .hero-stats{justify-content:center}
   .about-grid{grid-template-columns:1fr;text-align:center}
@@ -291,27 +383,45 @@ footer span{color:var(--cyan)}
 @media(max-width:768px){
   nav{padding:0.9rem 1.25rem}
   .nav-links{display:none}
-  .lang-toggle{display:none}
+  .lang-toggle,.nav-cv-btn{display:none}
   .hamburger{display:flex}
   .container{padding:0 1.25rem}
   section{padding:5rem 0!important}
   .photo-wrapper{width:240px;height:240px}
   .hero-name{font-size:2.6rem}
   .stack-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
-  .skills-grid{grid-template-columns:1fr}
-  .proj-grid{grid-template-columns:1fr}
-  .cert-grid{grid-template-columns:1fr}
-  .hero-stats{gap:1.5rem}
+  .skills-grid,.proj-grid,.cert-grid,.testi-grid,.cando-grid{grid-template-columns:1fr}
+  .kn-grid{grid-template-columns:repeat(2,1fr)}
+  #cursor,#cursor-trail{display:none}
 }
 @media(max-width:480px){
   .photo-wrapper{width:200px;height:200px}
   .hero-name{font-size:2.2rem}
   .lang-card{padding:1.5rem 2rem;min-width:140px}
+  .kn-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
-<canvas id="particles"></canvas>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-initials">C.A</div>
+  <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+  <div class="loader-text">Chargement du portfolio...</div>
+</div>
+
+<!-- READ PROGRESS -->
+<div id="read-progress"></div>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Retour en haut">
+  <i class="fa fa-chevron-up"></i>
+</button>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -319,16 +429,24 @@ footer span{color:var(--cyan)}
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#about" data-i18n="nav_about">Profil</a></li>
+      <li><a href="#keynumbers" data-i18n="nav_numbers">Chiffres</a></li>
+      <li><a href="#cando" data-i18n="nav_cando">Services</a></li>
       <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
-      <li><a href="#entrepreneur" data-i18n="nav_entrep">Entrepreneur</a></li>
       <li><a href="#experience" data-i18n="nav_exp">Expériences</a></li>
-      <li><a href="#projects" data-i18n="nav_proj">Projets</a></li>
-      <li><a href="#certifications" data-i18n="nav_cert">Certifications</a></li>
+      <li><a href="#testimonials" data-i18n="nav_testi">Avis</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
-    <div class="lang-toggle">
-      <button class="lang-btn active" id="btnFR" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+    <div class="nav-controls">
+      <a href="#" class="nav-cv-btn" id="cv-download-btn" title="Télécharger CV">
+        <i class="fa fa-download"></i> <span data-i18n="nav_cv">CV</span>
+      </a>
+      <button class="theme-btn" id="theme-btn" title="Changer le thème">
+        <i class="fa fa-moon" id="theme-icon"></i>
+      </button>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnFR" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+      </div>
     </div>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -339,11 +457,11 @@ footer span{color:var(--cyan)}
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" class="mob-link" data-i18n="nav_about">Profil</a>
+  <a href="#keynumbers" class="mob-link" data-i18n="nav_numbers">Chiffres</a>
+  <a href="#cando" class="mob-link" data-i18n="nav_cando">Services</a>
   <a href="#skills" class="mob-link" data-i18n="nav_skills">Skills</a>
-  <a href="#entrepreneur" class="mob-link" data-i18n="nav_entrep">Entrepreneur</a>
   <a href="#experience" class="mob-link" data-i18n="nav_exp">Expériences</a>
-  <a href="#projects" class="mob-link" data-i18n="nav_proj">Projets</a>
-  <a href="#certifications" class="mob-link" data-i18n="nav_cert">Certifications</a>
+  <a href="#testimonials" class="mob-link" data-i18n="nav_testi">Avis</a>
   <a href="#contact" class="mob-link" data-i18n="nav_contact">Contact</a>
   <div class="mob-lang">
     <button class="mob-lang-btn active" onclick="setLang('fr');closeMobileMenu()">FR</button>
@@ -353,21 +471,23 @@ footer span{color:var(--cyan)}
 
 <!-- HERO -->
 <section id="hero">
+  <canvas id="particles"></canvas>
   <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-tag"><div class="hero-tag-dot"></div><span data-i18n="hero_available">Disponible avec préavis d'1 mois</span></div>
       <h1 class="hero-name">Coulibaly<br>Alassane</h1>
-      <p class="hero-title">IT Support Specialist &nbsp;·&nbsp; <span class="hl">Infrastructure & Operations</span> &nbsp;·&nbsp; Abidjan, CI</p>
-      <p class="hero-desc" data-i18n="hero_desc">Je maintiens vos systèmes opérationnels 24/7 — parce qu'une infrastructure stable, c'est un business qui ne s'arrête pas.</p>
+      <p class="hero-title">IT Support Spécialiste &nbsp;|&nbsp; <span class="hl">Assistant Administrateur RX</span> &nbsp;|&nbsp; Abidjan, CI</p>
+      <div class="typewriter-wrap"><span id="typewriter"></span></div>
       <div class="hero-ctas">
         <a href="#contact" class="btn-primary"><i class="fa fa-paper-plane"></i> <span data-i18n="hero_cta1">Me contacter</span></a>
+        <a href="#" class="btn-cv" id="cv-hero-btn"><i class="fa fa-file-pdf"></i> <span data-i18n="hero_cv">Télécharger CV</span></a>
         <a href="#experience" class="btn-outline"><i class="fa fa-terminal"></i> <span data-i18n="hero_cta2">Mon parcours</span></a>
       </div>
       <div class="hero-stats">
         <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-label" data-i18n="stat1">Ans d'expérience</span></div>
         <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-label" data-i18n="stat2">Entreprises</span></div>
         <div class="stat"><span class="stat-num" data-count="10">0</span><span class="stat-label" data-i18n="stat3">Certifications</span></div>
-        <div class="stat"><span class="stat-num" data-count="12">0</span><span class="stat-label" data-i18n="stat4">K abonnés page CV</span></div>
+        <div class="stat"><span class="stat-num" data-count="12000">0</span><span class="stat-label" data-i18n="stat4">Abonnés page CV</span></div>
       </div>
     </div>
     <div class="hero-right">
@@ -393,9 +513,9 @@ footer span{color:var(--cyan)}
       <div class="about-text fade-in">
         <span class="sec-tag">// <span data-i18n="about_tag">Profil stratégique</span></span>
         <h2 class="sec-title" style="text-align:left;margin-bottom:1.25rem" data-i18n="about_title">À propos de moi</h2>
-        <p data-i18n="about_p1">Spécialiste IT avec <strong>plus de 6 ans d'expérience</strong> en support utilisateurs, administration d'infrastructure et exploitation des systèmes d'information, j'interviens sur des environnements exigeants où la continuité de service est non négociable.</p>
-        <p data-i18n="about_p2">Passé par des environnements <strong>bancaires</strong> (ADEAL S.A), <strong>industriels</strong> (EGCO SARL) et <strong>institutionnels</strong> (BNETD), j'ai développé une double expertise technique et opérationnelle couvrant la gestion de parc, la supervision des incidents et l'administration réseau.</p>
-        <p data-i18n="about_p3">Rigoureux, autonome et orienté <strong>résolution de problèmes</strong>, j'applique les bonnes pratiques ITIL pour maintenir des SLA élevés. Également fondateur d'une page de rédaction CV professionnelle avec +12 000 abonnés.</p>
+        <p data-i18n="about_p1">Spécialiste IT orienté support et exploitation, je veille à la disponibilité, à la stabilité et au bon fonctionnement des infrastructures informatiques. J'interviens sur l'assistance aux utilisateurs, la gestion du parc informatique, le déploiement et la maintenance des équipements, ainsi que le monitoring des systèmes et applications.</p>
+        <p data-i18n="about_p2">Habitué aux environnements exigeants, je contribue à la continuité des services IT, à l'efficacité opérationnelle et à la qualité du support informatique. Passé par des environnements <strong>industriels</strong> (EGCO SARL), de <strong>restauration & pâtisserie</strong> (ADEAL S.A) et <strong>institutionnels</strong> (BNETD).</p>
+        <p data-i18n="about_p3">Rigoureux, autonome et orienté <strong>résolution de problèmes</strong>, j'applique les bonnes pratiques ITIL pour maintenir des SLA élevés. Également fondateur d'une page de rédaction CV professionnelle avec <strong>+12 000 abonnés</strong>.</p>
         <div class="about-highlights">
           <div class="hl-item"><i class="fa fa-check-circle"></i> <span data-i18n="hl1">Support N1 & N2</span></div>
           <div class="hl-item"><i class="fa fa-check-circle"></i> <span data-i18n="hl2">Active Directory</span></div>
@@ -406,6 +526,58 @@ footer span{color:var(--cyan)}
           <div class="hl-item"><i class="fa fa-check-circle"></i> <span data-i18n="hl7">Cybersécurité</span></div>
           <div class="hl-item"><i class="fa fa-check-circle"></i> <span data-i18n="hl8">Windows Server</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY NUMBERS -->
+<section id="keynumbers">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// <span data-i18n="kn_tag">Impact mesurable</span></span>
+      <h2 class="sec-title" data-i18n="kn_title">Chiffres clés</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="kn-grid">
+      <div class="kn-card fade-in"><span class="kn-icon">🏢</span><span class="kn-num" data-count="250">0</span><span class="kn-label" data-i18n="kn1">Employés supportés<br>chez ADEAL S.A</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🎫</span><span class="kn-num" data-count="500">0</span><span class="kn-label" data-i18n="kn2">Tickets résolus<br>par an (estimation)</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🖥️</span><span class="kn-num" data-count="300">0</span><span class="kn-label" data-i18n="kn3">Équipements<br>déployés & maintenus</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">⚡</span><span class="kn-num" data-count="98">0</span><span class="kn-label" data-i18n="kn4">% taux de résolution<br>des incidents</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🌍</span><span class="kn-num" data-count="11">0</span><span class="kn-label" data-i18n="kn5">Pays desservis<br>via page CV</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">📜</span><span class="kn-num" data-count="10">0</span><span class="kn-label" data-i18n="kn6">Certifications<br>professionnelles</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">👥</span><span class="kn-num" data-count="12000">0</span><span class="kn-label" data-i18n="kn7">Abonnés sur<br>page CV pro</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🔒</span><span class="kn-num" data-count="6">0</span><span class="kn-label" data-i18n="kn8">Années d'expérience<br>en IT Support</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAN DO -->
+<section id="cando">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// <span data-i18n="cando_tag">Valeur ajoutée</span></span>
+      <h2 class="sec-title" data-i18n="cando_title">Ce que je peux faire pour vous</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="cando-grid">
+      <div class="cando-card fade-in">
+        <div class="cando-icon"><i class="fa fa-headset"></i></div>
+        <div class="cando-title" data-i18n="cando1_title">Support IT & Helpdesk</div>
+        <div class="cando-desc" data-i18n="cando1_desc">Prise en charge rapide des incidents N1 & N2, réduction des temps d'arrêt, satisfaction utilisateur maximale et respect strict des SLA.</div>
+        <div class="cando-tags"><span class="cando-tag">Ticketing</span><span class="cando-tag">SLA</span><span class="cando-tag">N1/N2</span><span class="cando-tag">ITSM</span></div>
+      </div>
+      <div class="cando-card fade-in">
+        <div class="cando-icon"><i class="fa fa-server"></i></div>
+        <div class="cando-title" data-i18n="cando2_title">Infrastructure & Réseau</div>
+        <div class="cando-desc" data-i18n="cando2_desc">Déploiement, configuration et maintenance d'infrastructures réseau et serveurs. Administration Active Directory, gestion VLAN et routage avancé.</div>
+        <div class="cando-tags"><span class="cando-tag">Windows Server</span><span class="cando-tag">Active Directory</span><span class="cando-tag">VLAN</span><span class="cando-tag">Cisco</span></div>
+      </div>
+      <div class="cando-card fade-in">
+        <div class="cando-icon"><i class="fa fa-shield-halved"></i></div>
+        <div class="cando-title" data-i18n="cando3_title">Cybersécurité & Sensibilisation</div>
+        <div class="cando-desc" data-i18n="cando3_desc">Audit des bonnes pratiques, mise en place de politiques de sécurité, sensibilisation des équipes et sécurisation des postes de travail.</div>
+        <div class="cando-tags"><span class="cando-tag">ANSSI</span><span class="cando-tag">Politique MDP</span><span class="cando-tag">Formation</span><span class="cando-tag">Audit</span></div>
       </div>
     </div>
   </div>
@@ -489,10 +661,10 @@ footer span{color:var(--cyan)}
         <div class="entrep-badge"><i class="fab fa-facebook" style="margin-right:0.4rem"></i> <span data-i18n="entrep_since">Depuis 2019</span></div>
         <div class="entrep-title" data-i18n="entrep_page">Rédaction CV Professionnel</div>
         <div class="entrep-sub" data-i18n="entrep_role">Fondateur & Expert en personal branding</div>
-        <p class="entrep-desc" data-i18n="entrep_desc">Fondateur d'une page spécialisée dans la rédaction de CV professionnels, accompagnant des milliers de candidats à travers l'Afrique francophone et la diaspora. Une expertise qui combine compétences IT, communication et personal branding.</p>
+        <p class="entrep-desc" data-i18n="entrep_desc">Fondateur d'une page spécialisée dans la rédaction de CV professionnels, accompagnant des milliers de candidats à travers l'Afrique francophone et la diaspora.</p>
         <div class="entrep-stats">
-          <div class="stat"><span class="e-stat-num" data-count-amber="12">0</span><span class="e-stat-lbl" data-i18n="entrep_s1">K Abonnés</span></div>
-          <div class="stat"><span class="e-stat-num" data-count-amber="2019">0</span><span class="e-stat-lbl" data-i18n="entrep_s2">Depuis</span></div>
+          <div class="stat"><span class="e-stat-num" data-count-amber="12000">0</span><span class="e-stat-lbl" data-i18n="entrep_s1">Abonnés</span></div>
+          <div class="stat"><span class="e-stat-num" style="font-size:1.2rem;color:var(--amber)">2019</span><span class="e-stat-lbl" data-i18n="entrep_s2">Depuis</span></div>
         </div>
         <a href="https://www.facebook.com/share/1HBUuU2SUN/?mibextid=wwXIfr" target="_blank" class="entrep-link">
           <i class="fab fa-facebook"></i> <span data-i18n="entrep_link">Voir la page Facebook</span>
@@ -500,20 +672,8 @@ footer span{color:var(--cyan)}
       </div>
       <div class="entrep-countries">
         <div style="font-family:var(--mono);font-size:0.7rem;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.75rem" data-i18n="entrep_countries">Pays desservis</div>
-        <div class="country-row">
-          <span class="country-tag">🇨🇮 Côte d'Ivoire</span>
-          <span class="country-tag">🇸🇳 Sénégal</span>
-          <span class="country-tag">🇲🇱 Mali</span>
-          <span class="country-tag">🇧🇫 Burkina Faso</span>
-          <span class="country-tag">🇳🇪 Niger</span>
-        </div>
-        <div class="country-row">
-          <span class="country-tag">🇹🇬 Togo</span>
-          <span class="country-tag">🇧🇯 Bénin</span>
-          <span class="country-tag">🇨🇲 Cameroun</span>
-          <span class="country-tag">🇫🇷 France</span>
-          <span class="country-tag">🇨🇦 Canada</span>
-        </div>
+        <div class="country-row"><span class="country-tag">🇨🇮 Côte d'Ivoire</span><span class="country-tag">🇸🇳 Sénégal</span><span class="country-tag">🇲🇱 Mali</span><span class="country-tag">🇧🇫 Burkina Faso</span><span class="country-tag">🇳🇪 Niger</span></div>
+        <div class="country-row"><span class="country-tag">🇹🇬 Togo</span><span class="country-tag">🇧🇯 Bénin</span><span class="country-tag">🇨🇲 Cameroun</span><span class="country-tag">🇫🇷 France</span><span class="country-tag">🇨🇦 Canada</span></div>
         <div class="country-row"><span class="country-tag" data-i18n="entrep_more">+ autres pays</span></div>
       </div>
     </div>
@@ -531,20 +691,18 @@ footer span{color:var(--cyan)}
     <div class="timeline">
       <div class="t-item">
         <div class="t-dot"></div>
-        <div class="t-meta">Oct. 2023 — <span data-i18n="present">Aujourd'hui</span> · ADEAL S.A — <span data-i18n="banking">Secteur Bancaire</span></div>
+        <div class="t-meta">Oct. 2023 — <span data-i18n="present">Aujourd'hui</span> · ADEAL S.A — <span data-i18n="adeal_sector">Pâtisserie Abidjanaise</span></div>
         <div class="t-company">ADEAL S.A</div>
         <div class="t-role" data-i18n="adeal_role">Spécialiste Support IT — Assistant Informatique</div>
         <div class="t-achievements">
           <div class="achiev" data-i18n="adeal_a1">Support technique N1 & N2 pour l'ensemble du parc utilisateurs avec maintien des SLA définis.</div>
           <div class="achiev" data-i18n="adeal_a2">Gestion complète du parc informatique (matériels et logiciels) avec traçabilité des équipements et contrôle des stocks.</div>
-          <div class="achiev" data-i18n="adeal_a3">Traitements quotidiens bancaires (cut-off, check-lists, extractions) et production de rapports via SQL pour la direction.</div>
+          <div class="achiev" data-i18n="adeal_a3">Traitements quotidiens des données (cut-off, check-lists, extractions) et production de rapports via SQL pour la direction.</div>
           <div class="achiev" data-i18n="adeal_a4">Administration du suivi des tickets via IT Maint — coordination des incidents, escalades et clôtures dans les délais.</div>
           <div class="achiev" data-i18n="adeal_a5">Coordination des prestataires IT et participation aux projets de déploiement de solutions applicatives.</div>
-          <div class="achiev" data-i18n="adeal_a6">Animation de sessions de sensibilisation aux bonnes pratiques de cybersécurité pour les collaborateurs.</div>
+          <div class="achiev" data-i18n="adeal_a6">Animation de sessions de sensibilisation aux bonnes pratiques de cybersécurité pour les 250 collaborateurs.</div>
         </div>
-        <div class="kpi-row">
-          <span class="kpi">Support N1 & N2</span><span class="kpi">SLA</span><span class="kpi">SQL</span><span class="kpi">ITSM</span><span class="kpi" data-i18n="banking">Secteur bancaire</span>
-        </div>
+        <div class="kpi-row"><span class="kpi">Support N1 & N2</span><span class="kpi">SLA</span><span class="kpi">SQL</span><span class="kpi">ITSM</span><span class="kpi">250 employés</span></div>
       </div>
       <div class="t-item">
         <div class="t-dot"></div>
@@ -585,50 +743,59 @@ footer span{color:var(--cyan)}
       <div class="sec-line"></div>
     </div>
     <div class="proj-grid">
-      <div class="proj-card fade-in">
-        <div class="proj-ico"><i class="fa fa-building-columns"></i></div>
-        <div class="proj-title" data-i18n="p1_title">Support IT en environnement bancaire</div>
-        <div class="proj-sec-lbl" data-i18n="context">Contexte</div>
-        <div class="proj-sec-txt" data-i18n="p1_ctx">Environnement bancaire critique nécessitant un support applicatif rigoureux avec traçabilité complète des incidents.</div>
-        <div class="proj-sec-lbl" data-i18n="actions">Actions</div>
-        <div class="proj-sec-txt" data-i18n="p1_act">Mise en place du suivi IT Maint, rapports SQL quotidiens, gestion des cut-off et coordination des prestataires.</div>
-        <div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p1_res">SLA maintenus — Zéro interruption critique non résolue</span></div>
+      <div class="proj-card fade-in"><div class="proj-ico"><i class="fa fa-cake-candles"></i></div><div class="proj-title" data-i18n="p1_title">Support IT — ADEAL S.A (Pâtisserie)</div><div class="proj-sec-lbl" data-i18n="context">Contexte</div><div class="proj-sec-txt" data-i18n="p1_ctx">Environnement exigeant de 250 employés nécessitant un support rigoureux avec traçabilité complète des incidents et reporting quotidien.</div><div class="proj-sec-lbl" data-i18n="actions">Actions</div><div class="proj-sec-txt" data-i18n="p1_act">Mise en place du suivi IT Maint, rapports SQL quotidiens, gestion des extractions de données et coordination des prestataires.</div><div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p1_res">SLA maintenus — 250 employés supportés — Zéro interruption critique</span></div></div>
+      <div class="proj-card proj-telecom fade-in"><div class="proj-ico"><i class="fa fa-tower-broadcast"></i></div><div class="proj-title" data-i18n="p2_title">Réseau Télécom — Axe Kani-Boundiali</div><div class="proj-sec-lbl" data-i18n="context">Contexte</div><div class="proj-sec-txt" data-i18n="p2_ctx">Mise en place d'un réseau de réservation télécom sur l'axe Kani-Boundiali. Génie Civil & Supervision télécom.</div><div class="proj-sec-lbl" data-i18n="actions">Actions</div><div class="proj-sec-txt" data-i18n="p2_act">Construction Chambres L3T · Fouilles · Pose fourreaux PEHD · Remblais · Passages difficiles · Fonçage.</div><div class="proj-result"><i class="fa fa-tower-broadcast"></i> <span data-i18n="p2_res">Infrastructure télécom déployée — Axe opérationnel</span></div></div>
+      <div class="proj-card fade-in"><div class="proj-ico"><i class="fa fa-network-wired"></i></div><div class="proj-title" data-i18n="p3_title">Déploiement réseau multi-sites</div><div class="proj-sec-lbl" data-i18n="context">Contexte</div><div class="proj-sec-txt" data-i18n="p3_ctx">Déploiement d'équipements réseau HP/Cisco avec VLAN dans un parc informatique en expansion.</div><div class="proj-sec-lbl" data-i18n="actions">Actions</div><div class="proj-sec-txt" data-i18n="p3_act">Configuration VLAN, routage OSPF/EIGRP, déploiement Cisco/HP, tests de connectivité et documentation.</div><div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p3_res">Infrastructure stable — connectivité optimisée</span></div></div>
+      <div class="proj-card fade-in"><div class="proj-ico"><i class="fa fa-shield-halved"></i></div><div class="proj-title" data-i18n="p4_title">Programme cybersécurité utilisateurs</div><div class="proj-sec-lbl" data-i18n="context">Contexte</div><div class="proj-sec-txt" data-i18n="p4_ctx">Incidents récurrents liés aux mauvaises pratiques (phishing, mots de passe faibles, supports amovibles).</div><div class="proj-sec-lbl" data-i18n="actions">Actions</div><div class="proj-sec-txt" data-i18n="p4_act">Sessions de sensibilisation, guides de bonnes pratiques et politiques de mots de passe via Active Directory.</div><div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p4_res">Réduction des incidents — conformité renforcée</span></div></div>
+      <div class="proj-card fade-in"><div class="proj-ico"><i class="fa fa-chart-line"></i></div><div class="proj-title" data-i18n="p5_title">Automatisation reporting SQL</div><div class="proj-sec-lbl" data-i18n="context">Contexte</div><div class="proj-sec-txt" data-i18n="p5_ctx">Production manuelle chronophage de rapports pour la direction avec risques d'erreurs et délais trop longs.</div><div class="proj-sec-lbl" data-i18n="actions">Actions</div><div class="proj-sec-txt" data-i18n="p5_act">Développement de requêtes SQL structurées, création de modèles de rapports périodiques standardisés.</div><div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p5_res">Reporting automatisé — fiabilité accrue</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="sec-tag">// <span data-i18n="testi_tag">Ils témoignent</span></span>
+      <h2 class="sec-title" data-i18n="testi_title">Témoignages & Recommandations</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"</div>
+        <p class="testi-text" data-i18n="testi1_text">Alassane est un technicien IT d'exception. Sa réactivité face aux incidents et sa capacité à maintenir notre parc informatique opérationnel sans interruption ont été déterminantes pour nos opérations quotidiennes. Un professionnel fiable et rigoureux.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
+          <div>
+            <div class="testi-name">Mr Sayore Moussa</div>
+            <div class="testi-role" data-i18n="testi1_role">Responsable Informatique · ADEAL S.A</div>
+          </div>
+        </div>
       </div>
-      <div class="proj-card proj-telecom fade-in">
-        <div class="proj-ico"><i class="fa fa-tower-broadcast"></i></div>
-        <div class="proj-title" data-i18n="p2_title">Réseau de réservation Télécom — Axe Kani-Boundiali</div>
-        <div class="proj-sec-lbl" data-i18n="context">Contexte</div>
-        <div class="proj-sec-txt" data-i18n="p2_ctx">Mise en place d'un réseau de réservation télécom sur l'axe Kani-Boundiali. Projet Génie Civil & Supervision télécom.</div>
-        <div class="proj-sec-lbl" data-i18n="actions">Actions</div>
-        <div class="proj-sec-txt" data-i18n="p2_act">Construction de Chambres L3T · Réalisation de fouilles · Pose de fourreaux PEHD · Remblais · Passages difficiles · Réalisation de fonçage.</div>
-        <div class="proj-result"><i class="fa fa-tower-broadcast"></i> <span data-i18n="p2_res">Infrastructure télécom déployée — Axe opérationnel</span></div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"</div>
+        <p class="testi-text" data-i18n="testi2_text">Alassane a géré notre infrastructure réseau avec une maîtrise technique impressionnante. Il a su déployer nos équipements Cisco rapidement et former nos équipes aux bonnes pratiques de sécurité. Je le recommande sans hésitation.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SV</div>
+          <div>
+            <div class="testi-name">Mr Sidibé Vazouma</div>
+            <div class="testi-role" data-i18n="testi2_role">Directeur · EGCO SARL</div>
+          </div>
+        </div>
       </div>
-      <div class="proj-card fade-in">
-        <div class="proj-ico"><i class="fa fa-network-wired"></i></div>
-        <div class="proj-title" data-i18n="p3_title">Déploiement réseau multi-sites</div>
-        <div class="proj-sec-lbl" data-i18n="context">Contexte</div>
-        <div class="proj-sec-txt" data-i18n="p3_ctx">Déploiement d'équipements réseau HP/Cisco avec VLAN dans un parc informatique en expansion.</div>
-        <div class="proj-sec-lbl" data-i18n="actions">Actions</div>
-        <div class="proj-sec-txt" data-i18n="p3_act">Configuration VLAN, routage OSPF/EIGRP, déploiement Cisco/HP, tests de connectivité et documentation.</div>
-        <div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p3_res">Infrastructure stable — connectivité inter-services optimisée</span></div>
-      </div>
-      <div class="proj-card fade-in">
-        <div class="proj-ico"><i class="fa fa-shield-halved"></i></div>
-        <div class="proj-title" data-i18n="p4_title">Programme cybersécurité utilisateurs</div>
-        <div class="proj-sec-lbl" data-i18n="context">Contexte</div>
-        <div class="proj-sec-txt" data-i18n="p4_ctx">Incidents récurrents liés aux mauvaises pratiques (phishing, mots de passe faibles, supports amovibles).</div>
-        <div class="proj-sec-lbl" data-i18n="actions">Actions</div>
-        <div class="proj-sec-txt" data-i18n="p4_act">Sessions de sensibilisation, guides de bonnes pratiques et politiques de mots de passe via Active Directory.</div>
-        <div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p4_res">Réduction des incidents comportementaux — conformité renforcée</span></div>
-      </div>
-      <div class="proj-card fade-in">
-        <div class="proj-ico"><i class="fa fa-chart-line"></i></div>
-        <div class="proj-title" data-i18n="p5_title">Automatisation reporting SQL</div>
-        <div class="proj-sec-lbl" data-i18n="context">Contexte</div>
-        <div class="proj-sec-txt" data-i18n="p5_ctx">Production manuelle chronophage de rapports pour la direction — risques d'erreurs et délais trop longs.</div>
-        <div class="proj-sec-lbl" data-i18n="actions">Actions</div>
-        <div class="proj-sec-txt" data-i18n="p5_act">Développement de requêtes SQL structurées, création de modèles de rapports périodiques standardisés.</div>
-        <div class="proj-result"><i class="fa fa-arrow-trend-up"></i> <span data-i18n="p5_res">Reporting automatisé — fiabilité accrue — livrables ponctuels</span></div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"</div>
+        <p class="testi-text" data-i18n="testi3_text">En tant que fondateur de sa page de rédaction CV, Alassane a aidé des centaines de candidats à décrocher leurs opportunités. Son sens du service, sa rigueur et son expertise en personal branding sont remarquables.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AB</div>
+          <div>
+            <div class="testi-name">Aminata B.</div>
+            <div class="testi-role" data-i18n="testi3_role">Cliente · Dakar, Sénégal</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -704,7 +871,7 @@ footer span{color:var(--cyan)}
           <a href="https://wa.me/2250778627460" target="_blank" class="c-link whatsapp"><i class="fab fa-whatsapp"></i><div><span class="c-link-lbl">WhatsApp</span><span class="c-link-val">+225 07 78 62 74 60</span></div></a>
           <a href="mailto:alassanecool37@gmail.com" class="c-link"><i class="fa fa-envelope"></i><div><span class="c-link-lbl">Email</span><span class="c-link-val">alassanecool37@gmail.com</span></div></a>
           <a href="https://www.linkedin.com/in/coulibaly-alassane-259460145/" target="_blank" class="c-link"><i class="fab fa-linkedin"></i><div><span class="c-link-lbl">LinkedIn</span><span class="c-link-val">Coulibaly Alassane</span></div></a>
-          <a href="https://www.facebook.com/share/1HBUuU2SUN/?mibextid=wwXIfr" target="_blank" class="c-link"><i class="fab fa-facebook"></i><div><span class="c-link-lbl">Facebook Page</span><span class="c-link-val">Rédaction CV Professionnel</span></div></a>
+          <a href="https://www.facebook.com/share/1HBUuU2SUN/?mibextid=wwXIfr" target="_blank" class="c-link"><i class="fab fa-facebook"></i><div><span class="c-link-lbl">Facebook</span><span class="c-link-val">Rédaction CV Professionnel</span></div></a>
         </div>
       </div>
       <div class="c-card fade-in">
@@ -717,7 +884,7 @@ footer span{color:var(--cyan)}
           <div class="c-pt" data-i18n="cp1">+6 ans d'expérience dans des secteurs exigeants</div>
           <div class="c-pt" data-i18n="cp2">Certifié Google IT Support Professional (2025)</div>
           <div class="c-pt" data-i18n="cp3">Maîtrise ITIL, Active Directory, réseaux Cisco/HP</div>
-          <div class="c-pt" data-i18n="cp4">Fondateur d'une page CV avec +12K abonnés</div>
+          <div class="c-pt" data-i18n="cp4">Fondateur d'une page CV avec +12 000 abonnés</div>
         </div>
       </div>
     </div>
@@ -725,7 +892,6 @@ footer span{color:var(--cyan)}
 </section>
 
 <footer>
-  <!-- VISITOR COUNTER -->
   <div class="visitor-counter">
     <div class="vc-inner">
       <div class="vc-icon"><i class="fa fa-eye"></i></div>
@@ -742,216 +908,212 @@ footer span{color:var(--cyan)}
 </footer>
 
 <script>
-// ── I18N TRANSLATIONS ──
-const translations = {
-  fr: {
-    nav_about:"Profil",nav_skills:"Skills",nav_entrep:"Entrepreneur",nav_exp:"Expériences",nav_proj:"Projets",nav_cert:"Certifications",nav_contact:"Contact",
+// ══════════════════════════════════════════
+// I18N
+// ══════════════════════════════════════════
+const T = {
+  fr:{
+    nav_about:"Profil",nav_numbers:"Chiffres",nav_cando:"Services",nav_skills:"Skills",nav_exp:"Expériences",nav_testi:"Avis",nav_contact:"Contact",nav_cv:"CV",
     hero_available:"Disponible avec préavis d'1 mois",
-    hero_desc:"Je maintiens vos systèmes opérationnels 24/7 — parce qu'une infrastructure stable, c'est un business qui ne s'arrête pas.",
-    hero_cta1:"Me contacter",hero_cta2:"Mon parcours",
-    stat1:"Ans d'expérience",stat2:"Entreprises",stat3:"Certifications",stat4:"K abonnés page CV",
+    hero_cta1:"Me contacter",hero_cta2:"Mon parcours",hero_cv:"Télécharger CV",
+    stat1:"Ans d'expérience",stat2:"Entreprises",stat3:"Certifications",stat4:"Abonnés page CV",
     about_tag:"Profil stratégique",about_title:"À propos de moi",
-    about_p1:"Spécialiste IT avec <strong>plus de 6 ans d'expérience</strong> en support utilisateurs, administration d'infrastructure et exploitation des systèmes d'information, j'interviens sur des environnements exigeants où la continuité de service est non négociable.",
-    about_p2:"Passé par des environnements <strong>bancaires</strong> (ADEAL S.A), <strong>industriels</strong> (EGCO SARL) et <strong>institutionnels</strong> (BNETD), j'ai développé une double expertise technique et opérationnelle couvrant la gestion de parc, la supervision des incidents et l'administration réseau.",
-    about_p3:"Rigoureux, autonome et orienté <strong>résolution de problèmes</strong>, j'applique les bonnes pratiques ITIL pour maintenir des SLA élevés. Également fondateur d'une page de rédaction CV professionnelle avec +12 000 abonnés.",
+    about_p1:"Spécialiste IT orienté support et exploitation, je veille à la disponibilité, à la stabilité et au bon fonctionnement des infrastructures informatiques. J'interviens sur l'assistance aux utilisateurs, la gestion du parc informatique, le déploiement et la maintenance des équipements, ainsi que le monitoring des systèmes et applications.",
+    about_p2:"Habitué aux environnements exigeants, je contribue à la continuité des services IT, à l'efficacité opérationnelle et à la qualité du support informatique. Passé par des environnements <strong>industriels</strong> (EGCO SARL), de <strong>restauration & pâtisserie</strong> (ADEAL S.A) et <strong>institutionnels</strong> (BNETD).",
+    about_p3:"Rigoureux, autonome et orienté <strong>résolution de problèmes</strong>, j'applique les bonnes pratiques ITIL pour maintenir des SLA élevés. Également fondateur d'une page de rédaction CV professionnelle avec <strong>+12 000 abonnés</strong>.",
     hl1:"Support N1 & N2",hl2:"Active Directory",hl3:"Gestion de parc",hl4:"VLAN / OSPF / EIGRP",hl5:"ITIL / ITSM",hl6:"SQL & reporting",hl7:"Cybersécurité",hl8:"Windows Server",
+    kn_tag:"Impact mesurable",kn_title:"Chiffres clés",
+    kn1:"Employés supportés\nchez ADEAL S.A",kn2:"Tickets résolus\npar an (estimation)",kn3:"Équipements\ndéployés & maintenus",kn4:"% taux de résolution\ndes incidents",kn5:"Pays desservis\nvia page CV",kn6:"Certifications\nprofessionnelles",kn7:"Abonnés sur\npage CV pro",kn8:"Années d'expérience\nen IT Support",
+    cando_tag:"Valeur ajoutée",cando_title:"Ce que je peux faire pour vous",
+    cando1_title:"Support IT & Helpdesk",cando1_desc:"Prise en charge rapide des incidents N1 & N2, réduction des temps d'arrêt, satisfaction utilisateur maximale et respect strict des SLA.",
+    cando2_title:"Infrastructure & Réseau",cando2_desc:"Déploiement, configuration et maintenance d'infrastructures réseau et serveurs. Administration Active Directory, gestion VLAN et routage avancé.",
+    cando3_title:"Cybersécurité & Sensibilisation",cando3_desc:"Audit des bonnes pratiques, mise en place de politiques de sécurité, sensibilisation des équipes et sécurisation des postes de travail.",
     skills_tag:"Compétences techniques",skills_title:"Expertise par domaine",
     skcat1:"Support & Exploitation",skcat2:"Infrastructure & Réseaux",skcat3:"Sécurité & Données",
-    sk1:"Support utilisateurs N1 & N2",sk2:"Gestion de parc informatique",sk3:"Ticketing ITSM (IT Maint)",sk4:"Monitoring systèmes & apps",
-    sk5:"Active Directory & Windows Server",sk6:"Réseaux VLAN / OSPF / EIGRP",sk7:"Équipements HP / Cisco",sk8:"Téléphonie Autocom",
-    sk9:"Sécurité poste de travail",sk10:"Cryptographie & réseau",sk11:"Requêtes SQL & reporting",sk12:"PowerShell & scripting",
+    sk1:"Support utilisateurs N1 & N2",sk2:"Gestion de parc informatique",sk3:"Ticketing ITSM (IT Maint)",sk4:"Monitoring systèmes & apps",sk5:"Active Directory & Windows Server",sk6:"Réseaux VLAN / OSPF / EIGRP",sk7:"Équipements HP / Cisco",sk8:"Téléphonie Autocom",sk9:"Sécurité poste de travail",sk10:"Cryptographie & réseau",sk11:"Requêtes SQL & reporting",sk12:"PowerShell & scripting",
     stack_tag:"Outils & Technologies",stack_title:"Stack technique",
-    entrep_tag:"Esprit entrepreneurial",entrep_title:"Fondateur & Créateur",entrep_since:"Depuis 2019",
-    entrep_page:"Rédaction CV Professionnel",entrep_role:"Fondateur & Expert en personal branding",
-    entrep_desc:"Fondateur d'une page spécialisée dans la rédaction de CV professionnels, accompagnant des milliers de candidats à travers l'Afrique francophone et la diaspora. Une expertise qui combine compétences IT, communication et personal branding.",
-    entrep_s1:"K Abonnés",entrep_s2:"Depuis",entrep_link:"Voir la page Facebook",
-    entrep_countries:"Pays desservis",entrep_more:"+ autres pays",
-    exp_tag:"Parcours professionnel",exp_title:"Expériences & réalisations",present:"Aujourd'hui",banking:"Secteur Bancaire",
+    entrep_tag:"Esprit entrepreneurial",entrep_title:"Fondateur & Créateur",entrep_since:"Depuis 2019",entrep_page:"Rédaction CV Professionnel",entrep_role:"Fondateur & Expert en personal branding",entrep_desc:"Fondateur d'une page spécialisée dans la rédaction de CV professionnels, accompagnant des milliers de candidats à travers l'Afrique francophone et la diaspora.",entrep_s1:"Abonnés",entrep_s2:"Depuis",entrep_link:"Voir la page Facebook",entrep_countries:"Pays desservis",entrep_more:"+ autres pays",
+    exp_tag:"Parcours professionnel",exp_title:"Expériences & réalisations",present:"Aujourd'hui",adeal_sector:"Pâtisserie Abidjanaise",
     adeal_role:"Spécialiste Support IT — Assistant Informatique",
-    adeal_a1:"Support technique N1 & N2 pour l'ensemble du parc utilisateurs avec maintien des SLA définis.",
-    adeal_a2:"Gestion complète du parc informatique (matériels et logiciels) avec traçabilité des équipements et contrôle des stocks.",
-    adeal_a3:"Traitements quotidiens bancaires (cut-off, check-lists, extractions) et production de rapports via SQL pour la direction.",
-    adeal_a4:"Administration du suivi des tickets via IT Maint — coordination des incidents, escalades et clôtures dans les délais.",
-    adeal_a5:"Coordination des prestataires IT et participation aux projets de déploiement de solutions applicatives.",
-    adeal_a6:"Animation de sessions de sensibilisation aux bonnes pratiques de cybersécurité pour les collaborateurs.",
-    egco_role:"Assistant Informatique",
-    egco_a1:"Installation, configuration et déploiement des équipements informatiques pour l'ensemble des postes de travail.",
-    egco_a2:"Diagnostic et résolution des incidents logiciels et matériels, réduisant les temps d'arrêt opérationnels.",
-    egco_a3:"Gestion des acquisitions IT : sélection fournisseurs, commandes et suivi budgétaire.",
-    egco_a4:"Continuité de service pour les systèmes et réseaux internes garantissant la disponibilité des ressources IT.",
+    adeal_a1:"Support technique N1 & N2 pour l'ensemble du parc utilisateurs avec maintien des SLA définis.",adeal_a2:"Gestion complète du parc informatique (matériels et logiciels) avec traçabilité des équipements et contrôle des stocks.",adeal_a3:"Traitements quotidiens des données (cut-off, check-lists, extractions) et production de rapports via SQL pour la direction.",adeal_a4:"Administration du suivi des tickets via IT Maint — coordination des incidents, escalades et clôtures dans les délais.",adeal_a5:"Coordination des prestataires IT et participation aux projets de déploiement de solutions applicatives.",adeal_a6:"Animation de sessions de sensibilisation aux bonnes pratiques de cybersécurité pour les 250 collaborateurs.",
+    egco_role:"Assistant Informatique",egco_a1:"Installation, configuration et déploiement des équipements informatiques pour l'ensemble des postes de travail.",egco_a2:"Diagnostic et résolution des incidents logiciels et matériels, réduisant les temps d'arrêt opérationnels.",egco_a3:"Gestion des acquisitions IT : sélection fournisseurs, commandes et suivi budgétaire.",egco_a4:"Continuité de service pour les systèmes et réseaux internes garantissant la disponibilité des ressources IT.",
     deploy:"Déploiement",purchase:"Gestion achats",maint:"Maintenance",
-    bnetd_role:"Technicien Support Informatique N1 & N2",
-    bnetd_a1:"Résolution des incidents de connexion, d'impression et de configuration des pilotes pour les agents.",
-    bnetd_a2:"Mise en route et optimisation des nouveaux équipements informatiques dans le parc institutionnel.",
-    bnetd_a3:"Assistance multicanal (téléphone, email, présentiel) avec prise en charge rapide des incidents.",
-    bnetd_a4:"Maintenance préventive et corrective régulière de l'ensemble du parc informatique.",
+    bnetd_role:"Technicien Support Informatique N1 & N2",bnetd_a1:"Résolution des incidents de connexion, d'impression et de configuration des pilotes pour les agents.",bnetd_a2:"Mise en route et optimisation des nouveaux équipements informatiques dans le parc institutionnel.",bnetd_a3:"Assistance multicanal (téléphone, email, présentiel) avec prise en charge rapide des incidents.",bnetd_a4:"Maintenance préventive et corrective régulière de l'ensemble du parc informatique.",
     public_inst:"Institution publique",multichannel:"Support multicanal",prev_maint:"Maintenance préventive",
-    proj_tag:"Réalisations clés",proj_title:"Projets techniques majeurs",
-    context:"Contexte",actions:"Actions",
-    p1_title:"Support IT en environnement bancaire",
-    p1_ctx:"Environnement bancaire critique nécessitant un support applicatif rigoureux avec traçabilité complète des incidents.",
-    p1_act:"Mise en place du suivi IT Maint, rapports SQL quotidiens, gestion des cut-off et coordination des prestataires.",
-    p1_res:"SLA maintenus — Zéro interruption critique non résolue",
-    p2_title:"Réseau de réservation Télécom — Axe Kani-Boundiali",
-    p2_ctx:"Mise en place d'un réseau de réservation télécom sur l'axe Kani-Boundiali. Projet Génie Civil & Supervision télécom.",
-    p2_act:"Construction de Chambres L3T · Réalisation de fouilles · Pose de fourreaux PEHD · Remblais · Passages difficiles · Réalisation de fonçage.",
-    p2_res:"Infrastructure télécom déployée — Axe opérationnel",
-    p3_title:"Déploiement réseau multi-sites",
-    p3_ctx:"Déploiement d'équipements réseau HP/Cisco avec VLAN dans un parc informatique en expansion.",
-    p3_act:"Configuration VLAN, routage OSPF/EIGRP, déploiement Cisco/HP, tests de connectivité et documentation.",
-    p3_res:"Infrastructure stable — connectivité inter-services optimisée",
-    p4_title:"Programme cybersécurité utilisateurs",
-    p4_ctx:"Incidents récurrents liés aux mauvaises pratiques (phishing, mots de passe faibles, supports amovibles).",
-    p4_act:"Sessions de sensibilisation, guides de bonnes pratiques et politiques de mots de passe via Active Directory.",
-    p4_res:"Réduction des incidents comportementaux — conformité renforcée",
-    p5_title:"Automatisation reporting SQL",
-    p5_ctx:"Production manuelle chronophage de rapports pour la direction — risques d'erreurs et délais trop longs.",
-    p5_act:"Développement de requêtes SQL structurées, création de modèles de rapports périodiques standardisés.",
-    p5_res:"Reporting automatisé — fiabilité accrue — livrables ponctuels",
+    proj_tag:"Réalisations clés",proj_title:"Projets techniques majeurs",context:"Contexte",actions:"Actions",
+    p1_title:"Support IT — ADEAL S.A (Pâtisserie)",p1_ctx:"Environnement exigeant de 250 employés nécessitant un support rigoureux avec traçabilité complète.",p1_act:"Mise en place du suivi IT Maint, rapports SQL quotidiens, gestion des extractions et coordination prestataires.",p1_res:"SLA maintenus — 250 employés supportés — Zéro interruption critique",
+    p2_title:"Réseau Télécom — Axe Kani-Boundiali",p2_ctx:"Mise en place d'un réseau de réservation télécom sur l'axe Kani-Boundiali. Génie Civil & Supervision.",p2_act:"Construction Chambres L3T · Fouilles · Pose fourreaux PEHD · Remblais · Passages difficiles · Fonçage.",p2_res:"Infrastructure télécom déployée — Axe opérationnel",
+    p3_title:"Déploiement réseau multi-sites",p3_ctx:"Déploiement d'équipements réseau HP/Cisco avec VLAN dans un parc informatique en expansion.",p3_act:"Configuration VLAN, routage OSPF/EIGRP, déploiement Cisco/HP, tests et documentation.",p3_res:"Infrastructure stable — connectivité optimisée",
+    p4_title:"Programme cybersécurité utilisateurs",p4_ctx:"Incidents récurrents liés aux mauvaises pratiques (phishing, mots de passe faibles).",p4_act:"Sessions de sensibilisation, guides de bonnes pratiques et politiques MDP via Active Directory.",p4_res:"Réduction des incidents — conformité renforcée",
+    p5_title:"Automatisation reporting SQL",p5_ctx:"Production manuelle chronophage de rapports avec risques d'erreurs et délais longs.",p5_act:"Développement de requêtes SQL structurées, modèles de rapports périodiques standardisés.",p5_res:"Reporting automatisé — fiabilité accrue",
+    testi_tag:"Ils témoignent",testi_title:"Témoignages & Recommandations",
+    testi1_text:"Alassane est un technicien IT d'exception. Sa réactivité face aux incidents et sa capacité à maintenir notre parc informatique opérationnel sans interruption ont été déterminantes pour nos opérations quotidiennes. Un professionnel fiable et rigoureux.",testi1_role:"Responsable Informatique · ADEAL S.A",
+    testi2_text:"Alassane a géré notre infrastructure réseau avec une maîtrise technique impressionnante. Il a su déployer nos équipements Cisco rapidement et former nos équipes aux bonnes pratiques de sécurité. Je le recommande sans hésitation.",testi2_role:"Directeur · EGCO SARL",
+    testi3_text:"En tant que fondateur de sa page de rédaction CV, Alassane a aidé des centaines de candidats à décrocher leurs opportunités. Son sens du service, sa rigueur et son expertise en personal branding sont remarquables.",testi3_role:"Cliente · Dakar, Sénégal",
     cert_tag:"Développement continu",cert_title:"Certifications",
-    edu_tag:"Formation académique",edu_title:"Diplômes",
-    edu1:"Licence en Réseaux et Sécurité Informatique — Bac+3",
-    edu2:"BTS Réseau Informatique et Télécommunications — Bac+2",
-    edu3:"Baccalauréat Série C",
+    edu_tag:"Formation académique",edu_title:"Diplômes",edu1:"Licence en Réseaux et Sécurité Informatique — Bac+3",edu2:"BTS Réseau Informatique et Télécommunications — Bac+2",edu3:"Baccalauréat Série C",
     lang_tag:"Communication",lang_title:"Langues",lang_fr:"Langue maternelle",lang_en:"Niveau intermédiaire",
-    contact_tag:"Restons en contact",contact_title:"Me contacter",
-    contact_intro:"Vous avez un projet, une opportunité ou souhaitez échanger sur les sujets IT ? Je suis ouvert à toute discussion sérieuse.",
-    c_card_title:"Prêt pour de nouveaux défis IT",
-    c_card_desc:"Ouvert aux opportunités en CDI, CDD ou mission dans le support IT, l'infrastructure ou la cybersécurité.",
-    avail_text:"Disponible avec préavis d'1 mois",
-    loc_text:"Abidjan, Côte d'Ivoire — Ouvert à la mobilité internationale",
-    strengths:"Points forts",
-    cp1:"+6 ans d'expérience dans des secteurs exigeants",cp2:"Certifié Google IT Support Professional (2025)",
-    cp3:"Maîtrise ITIL, Active Directory, réseaux Cisco/HP",cp4:"Fondateur d'une page CV avec +12K abonnés",
+    contact_tag:"Restons en contact",contact_title:"Me contacter",contact_intro:"Vous avez un projet, une opportunité ou souhaitez échanger sur les sujets IT ? Je suis ouvert à toute discussion sérieuse.",
+    c_card_title:"Prêt pour de nouveaux défis IT",c_card_desc:"Ouvert aux opportunités en CDI, CDD ou mission dans le support IT, l'infrastructure ou la cybersécurité.",avail_text:"Disponible avec préavis d'1 mois",loc_text:"Abidjan, Côte d'Ivoire — Ouvert à la mobilité internationale",strengths:"Points forts",cp1:"+6 ans d'expérience dans des secteurs exigeants",cp2:"Certifié Google IT Support Professional (2025)",cp3:"Maîtrise ITIL, Active Directory, réseaux Cisco/HP",cp4:"Fondateur d'une page CV avec +12 000 abonnés",
     footer_sub:"Conçu avec précision · Propulsé par la passion IT"
   },
-  en: {
-    nav_about:"Profile",nav_skills:"Skills",nav_entrep:"Entrepreneur",nav_exp:"Experience",nav_proj:"Projects",nav_cert:"Certifications",nav_contact:"Contact",
-    hero_available:"Available with 1 month notice",
-    hero_desc:"I keep your systems running 24/7 — because a stable infrastructure means a business that never stops.",
-    hero_cta1:"Contact me",hero_cta2:"My journey",
-    stat1:"Years of experience",stat2:"Companies",stat3:"Certifications",stat4:"K followers CV page",
+  en:{
+    nav_about:"Profile",nav_numbers:"Numbers",nav_cando:"Services",nav_skills:"Skills",nav_exp:"Experience",nav_testi:"Reviews",nav_contact:"Contact",nav_cv:"Resume",
+    hero_available:"Available with 1 month notice",hero_cta1:"Contact me",hero_cta2:"My journey",hero_cv:"Download Resume",
+    stat1:"Years of experience",stat2:"Companies",stat3:"Certifications",stat4:"CV page followers",
     about_tag:"Strategic profile",about_title:"About me",
-    about_p1:"IT Specialist with <strong>over 6 years of experience</strong> in user support, infrastructure administration and information systems operations, I work in demanding environments where service continuity is non-negotiable.",
-    about_p2:"Having worked in <strong>banking</strong> (ADEAL S.A), <strong>industrial</strong> (EGCO SARL) and <strong>institutional</strong> (BNETD) environments, I have developed dual technical and operational expertise covering fleet management, incident supervision and network administration.",
-    about_p3:"Rigorous, autonomous and problem-solving oriented, I apply ITIL best practices to maintain high SLAs. Also founder of a professional CV writing page with +12,000 followers.",
+    about_p1:"IT Specialist focused on support and operations, I ensure the availability, stability and proper functioning of IT infrastructures. I handle user assistance, IT fleet management, equipment deployment and maintenance, as well as system and application monitoring.",
+    about_p2:"Experienced in demanding environments, I contribute to IT service continuity, operational efficiency and quality IT support. I have worked in <strong>industrial</strong> (EGCO SARL), <strong>food & pastry</strong> (ADEAL S.A) and <strong>institutional</strong> (BNETD) environments.",
+    about_p3:"Rigorous, autonomous and problem-solving oriented, I apply ITIL best practices to maintain high SLAs. Also founder of a professional CV writing page with <strong>+12,000 followers</strong>.",
     hl1:"Support N1 & N2",hl2:"Active Directory",hl3:"Fleet Management",hl4:"VLAN / OSPF / EIGRP",hl5:"ITIL / ITSM",hl6:"SQL & Reporting",hl7:"Cybersecurity",hl8:"Windows Server",
+    kn_tag:"Measurable impact",kn_title:"Key figures",
+    kn1:"Employees supported\nat ADEAL S.A",kn2:"Tickets resolved\nper year (estimate)",kn3:"Equipment\ndeployed & maintained",kn4:"% incident resolution\nrate",kn5:"Countries served\nvia CV page",kn6:"Professional\ncertifications",kn7:"Followers on\npro CV page",kn8:"Years of experience\nin IT Support",
+    cando_tag:"Added value",cando_title:"What I can do for you",
+    cando1_title:"IT Support & Helpdesk",cando1_desc:"Fast incident handling N1 & N2, reduced downtime, maximum user satisfaction and strict SLA compliance.",
+    cando2_title:"Infrastructure & Network",cando2_desc:"Deployment, configuration and maintenance of network and server infrastructures. Active Directory administration, VLAN management and advanced routing.",
+    cando3_title:"Cybersecurity & Awareness",cando3_desc:"Best practice audit, security policy implementation, team awareness training and workstation hardening.",
     skills_tag:"Technical skills",skills_title:"Expertise by domain",
     skcat1:"Support & Operations",skcat2:"Infrastructure & Networks",skcat3:"Security & Data",
-    sk1:"User support N1 & N2",sk2:"IT fleet management",sk3:"ITSM Ticketing (IT Maint)",sk4:"Systems & apps monitoring",
-    sk5:"Active Directory & Windows Server",sk6:"VLAN / OSPF / EIGRP Networks",sk7:"HP / Cisco equipment",sk8:"Autocom telephony",
-    sk9:"Workstation security",sk10:"Cryptography & network",sk11:"SQL queries & reporting",sk12:"PowerShell & scripting",
+    sk1:"User support N1 & N2",sk2:"IT fleet management",sk3:"ITSM Ticketing (IT Maint)",sk4:"Systems & apps monitoring",sk5:"Active Directory & Windows Server",sk6:"VLAN / OSPF / EIGRP Networks",sk7:"HP / Cisco equipment",sk8:"Autocom telephony",sk9:"Workstation security",sk10:"Cryptography & network",sk11:"SQL queries & reporting",sk12:"PowerShell & scripting",
     stack_tag:"Tools & Technologies",stack_title:"Technical stack",
-    entrep_tag:"Entrepreneurial mindset",entrep_title:"Founder & Creator",entrep_since:"Since 2019",
-    entrep_page:"Professional CV Writing",entrep_role:"Founder & Personal Branding Expert",
-    entrep_desc:"Founder of a page specializing in professional CV writing, supporting thousands of candidates across French-speaking Africa and the diaspora. An expertise that combines IT skills, communication and personal branding.",
-    entrep_s1:"K Followers",entrep_s2:"Since",entrep_link:"View Facebook page",
-    entrep_countries:"Countries served",entrep_more:"+ other countries",
-    exp_tag:"Professional journey",exp_title:"Experience & achievements",present:"Present",banking:"Banking sector",
-    adeal_role:"IT Support Specialist — IT Assistant",
-    adeal_a1:"Technical support N1 & N2 for the entire user fleet with maintenance of defined SLAs.",
-    adeal_a2:"Complete management of IT assets (hardware and software) with equipment traceability and stock control.",
-    adeal_a3:"Daily banking operations (cut-off, checklists, extractions) and production of SQL reports for management.",
-    adeal_a4:"Ticket tracking administration via IT Maint — incident coordination, escalations and timely closures.",
-    adeal_a5:"IT vendor coordination and participation in application solution deployment projects.",
-    adeal_a6:"Cybersecurity awareness sessions on best practices for staff.",
-    egco_role:"IT Assistant",
-    egco_a1:"Installation, configuration and deployment of IT equipment for all workstations.",
-    egco_a2:"Diagnosis and resolution of software and hardware incidents, reducing operational downtime.",
-    egco_a3:"IT procurement management: vendor selection, orders and budget tracking.",
-    egco_a4:"Service continuity for internal systems and networks ensuring IT resource availability.",
+    entrep_tag:"Entrepreneurial mindset",entrep_title:"Founder & Creator",entrep_since:"Since 2019",entrep_page:"Professional CV Writing",entrep_role:"Founder & Personal Branding Expert",entrep_desc:"Founder of a page specializing in professional CV writing, supporting thousands of candidates across French-speaking Africa and the diaspora.",entrep_s1:"Followers",entrep_s2:"Since",entrep_link:"View Facebook page",entrep_countries:"Countries served",entrep_more:"+ other countries",
+    exp_tag:"Professional journey",exp_title:"Experience & achievements",present:"Present",adeal_sector:"Pastry & Food Industry",
+    adeal_role:"IT Support Specialist — IT Assistant",adeal_a1:"Technical support N1 & N2 for all users with defined SLA maintenance.",adeal_a2:"Complete IT asset management (hardware and software) with equipment traceability and stock control.",adeal_a3:"Daily data operations (cut-off, checklists, extractions) and SQL reports for management.",adeal_a4:"Ticket tracking via IT Maint — incident coordination, escalations and timely closures.",adeal_a5:"IT vendor coordination and participation in application deployment projects.",adeal_a6:"Cybersecurity awareness sessions for 250 employees.",
+    egco_role:"IT Assistant",egco_a1:"Installation, configuration and deployment of IT equipment for all workstations.",egco_a2:"Diagnosis and resolution of software and hardware incidents, reducing operational downtime.",egco_a3:"IT procurement management: vendor selection, orders and budget tracking.",egco_a4:"Service continuity for internal systems and networks ensuring IT resource availability.",
     deploy:"Deployment",purchase:"Procurement",maint:"Maintenance",
-    bnetd_role:"IT Support Technician N1 & N2",
-    bnetd_a1:"Resolution of connectivity, printing and driver configuration incidents for staff.",
-    bnetd_a2:"Setup and optimization of new IT equipment in the institutional fleet.",
-    bnetd_a3:"Multi-channel support (phone, email, on-site) with rapid incident handling.",
-    bnetd_a4:"Regular preventive and corrective maintenance of the entire IT fleet.",
+    bnetd_role:"IT Support Technician N1 & N2",bnetd_a1:"Resolution of connectivity, printing and driver configuration incidents.",bnetd_a2:"Setup and optimization of new IT equipment in the institutional fleet.",bnetd_a3:"Multi-channel support (phone, email, on-site) with rapid incident handling.",bnetd_a4:"Regular preventive and corrective maintenance of the entire IT fleet.",
     public_inst:"Public institution",multichannel:"Multi-channel support",prev_maint:"Preventive maintenance",
-    proj_tag:"Key achievements",proj_title:"Major technical projects",
-    context:"Context",actions:"Actions",
-    p1_title:"IT Support in banking environment",
-    p1_ctx:"Critical banking environment requiring rigorous application support with complete incident traceability.",
-    p1_act:"IT Maint tracking setup, daily SQL reports, cut-off management and vendor coordination.",
-    p1_res:"SLAs maintained — Zero unresolved critical outage",
-    p2_title:"Telecom Network — Kani-Boundiali Axis",
-    p2_ctx:"Deployment of a telecom reservation network on the Kani-Boundiali axis. Civil Engineering & Telecom Supervision project.",
-    p2_act:"Construction of L3T chambers · Excavation works · PEHD conduit laying · Backfilling · Difficult crossings · Pipe jacking.",
-    p2_res:"Telecom infrastructure deployed — Operational axis",
-    p3_title:"Multi-site network deployment",
-    p3_ctx:"Deployment of HP/Cisco network equipment with VLAN in an expanding IT fleet.",
-    p3_act:"VLAN configuration, OSPF/EIGRP routing, Cisco/HP deployment, connectivity testing and documentation.",
-    p3_res:"Stable infrastructure — optimized inter-service connectivity",
-    p4_title:"User cybersecurity program",
-    p4_ctx:"Recurring incidents due to poor practices (phishing, weak passwords, unsecured removable media).",
-    p4_act:"Awareness sessions, best practice guides and password policies via Active Directory.",
-    p4_res:"Reduced behavioral incidents — enhanced compliance",
-    p5_title:"SQL reporting automation",
-    p5_ctx:"Time-consuming manual report production for management — risk of errors and delays.",
-    p5_act:"Development of structured SQL queries, creation of standardized periodic report templates.",
-    p5_res:"Automated reporting — improved reliability — on-time deliverables",
+    proj_tag:"Key achievements",proj_title:"Major technical projects",context:"Context",actions:"Actions",
+    p1_title:"IT Support — ADEAL S.A (Pastry)",p1_ctx:"Demanding environment of 250 employees requiring rigorous support with complete incident traceability.",p1_act:"IT Maint tracking setup, daily SQL reports, data extraction management and vendor coordination.",p1_res:"SLAs maintained — 250 employees supported — Zero critical outage",
+    p2_title:"Telecom Network — Kani-Boundiali Axis",p2_ctx:"Deployment of a telecom reservation network on the Kani-Boundiali axis. Civil Engineering & Supervision.",p2_act:"L3T chamber construction · Excavation · PEHD conduit laying · Backfilling · Difficult crossings · Pipe jacking.",p2_res:"Telecom infrastructure deployed — Operational axis",
+    p3_title:"Multi-site network deployment",p3_ctx:"Deployment of HP/Cisco network equipment with VLAN in an expanding IT fleet.",p3_act:"VLAN configuration, OSPF/EIGRP routing, Cisco/HP deployment, testing and documentation.",p3_res:"Stable infrastructure — optimized connectivity",
+    p4_title:"User cybersecurity program",p4_ctx:"Recurring incidents due to poor practices (phishing, weak passwords).",p4_act:"Awareness sessions, best practice guides and password policies via Active Directory.",p4_res:"Reduced incidents — enhanced compliance",
+    p5_title:"SQL reporting automation",p5_ctx:"Time-consuming manual report production with error risks and long delays.",p5_act:"Development of structured SQL queries, standardized periodic report templates.",p5_res:"Automated reporting — improved reliability",
+    testi_tag:"They recommend",testi_title:"Testimonials & Recommendations",
+    testi1_text:"Alassane is an exceptional IT technician. His responsiveness to incidents and ability to keep our IT infrastructure running without interruption were decisive for our daily operations. A reliable and rigorous professional.",testi1_role:"IT Manager · ADEAL S.A",
+    testi2_text:"Alassane managed our network infrastructure with impressive technical mastery. He quickly deployed our Cisco equipment and trained our teams on security best practices. I recommend him without hesitation.",testi2_role:"Director · EGCO SARL",
+    testi3_text:"As the founder of his CV writing page, Alassane has helped hundreds of candidates land their opportunities. His service mindset, rigor and personal branding expertise are remarkable.",testi3_role:"Client · Dakar, Senegal",
     cert_tag:"Continuous development",cert_title:"Certifications",
-    edu_tag:"Academic background",edu_title:"Degrees",
-    edu1:"Bachelor's Degree in Networks and IT Security — Bac+3",
-    edu2:"HND in Computer Networks and Telecommunications — Bac+2",
-    edu3:"Scientific Baccalaureate Series C",
+    edu_tag:"Academic background",edu_title:"Degrees",edu1:"Bachelor's in Networks and IT Security — Bac+3",edu2:"HND in Computer Networks and Telecommunications",edu3:"Scientific Baccalaureate Series C",
     lang_tag:"Communication",lang_title:"Languages",lang_fr:"Native language",lang_en:"Intermediate level",
-    contact_tag:"Let's connect",contact_title:"Contact me",
-    contact_intro:"Do you have a project, an opportunity or would like to discuss IT topics? I am open to any serious conversation.",
-    c_card_title:"Ready for new IT challenges",
-    c_card_desc:"Open to permanent, fixed-term or consulting opportunities in IT support, infrastructure or cybersecurity.",
-    avail_text:"Available with 1 month notice",
-    loc_text:"Abidjan, Ivory Coast — Open to international mobility",
-    strengths:"Key strengths",
-    cp1:"+6 years of experience in demanding sectors",cp2:"Google IT Support Professional certified (2025)",
-    cp3:"Mastery of ITIL, Active Directory, Cisco/HP networks",cp4:"Founder of a CV page with +12K followers",
+    contact_tag:"Let's connect",contact_title:"Contact me",contact_intro:"Do you have a project, an opportunity or would like to discuss IT topics? I am open to any serious conversation.",
+    c_card_title:"Ready for new IT challenges",c_card_desc:"Open to permanent, fixed-term or consulting opportunities in IT support, infrastructure or cybersecurity.",avail_text:"Available with 1 month notice",loc_text:"Abidjan, Ivory Coast — Open to international mobility",strengths:"Key strengths",cp1:"+6 years of experience in demanding sectors",cp2:"Google IT Support Professional certified (2025)",cp3:"Mastery of ITIL, Active Directory, Cisco/HP networks",cp4:"Founder of a CV page with +12,000 followers",
     footer_sub:"Crafted with precision · Powered by IT passion"
   }
 };
 
 let currentLang = 'fr';
 
-function setLang(lang) {
+function setLang(lang){
   currentLang = lang;
-  const t = translations[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) el.innerHTML = t[key];
+  const t = T[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(t[k] !== undefined) el.innerHTML = t[k];
   });
   document.getElementById('btnFR').classList.toggle('active', lang==='fr');
   document.getElementById('btnEN').classList.toggle('active', lang==='en');
-  document.querySelectorAll('.mob-lang-btn').forEach((btn,i)=>{
-    btn.classList.toggle('active', (i===0&&lang==='fr')||(i===1&&lang==='en'));
-  });
+  document.querySelectorAll('.mob-lang-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&lang==='fr')||(i===1&&lang==='en')));
   document.documentElement.lang = lang;
+  const lbl = document.getElementById('vc-label');
+  if(lbl) lbl.textContent = lang==='en'?'Unique visitors':'Visiteurs uniques';
+  const loaderTxt = document.querySelector('.loader-text');
+  if(loaderTxt) loaderTxt.textContent = lang==='en'?'Loading portfolio...':'Chargement du portfolio...';
 }
+
+// ── AUTO DETECT LANGUAGE ──
+(function(){
+  const browserLang = (navigator.language || navigator.userLanguage || 'fr').toLowerCase().substring(0,2);
+  const lang = browserLang === 'en' ? 'en' : 'fr';
+  setLang(lang);
+})();
+
+// ── LOADER ──
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hide');
+    setTimeout(()=>document.getElementById('loader').style.display='none', 700);
+  }, 2000);
+});
 
 // ── PARTICLES ──
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
-let W, H, parts = [];
+let W,H,parts=[];
 function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-resize();
-window.addEventListener('resize',resize);
-class P{
-  constructor(){this.reset()}
-  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.2+0.3;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.a=Math.random()*0.4+0.05}
-  update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset()}
-  draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,229,255,${this.a})`;ctx.fill()}
-}
+resize();window.addEventListener('resize',resize);
+class P{constructor(){this.reset()}reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.2+0.3;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.a=Math.random()*0.4+0.05}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset()}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,229,255,${this.a})`;ctx.fill()}}
 for(let i=0;i<80;i++) parts.push(new P());
-function animP(){
-  ctx.clearRect(0,0,W,H);
-  parts.forEach(p=>{p.update();p.draw()});
-  for(let i=0;i<parts.length;i++) for(let j=i+1;j<parts.length;j++){
-    const dx=parts[i].x-parts[j].x,dy=parts[i].y-parts[j].y,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<100){ctx.beginPath();ctx.moveTo(parts[i].x,parts[i].y);ctx.lineTo(parts[j].x,parts[j].y);ctx.strokeStyle=`rgba(0,229,255,${0.06*(1-d/100)})`;ctx.lineWidth=0.5;ctx.stroke()}
-  }
-  requestAnimationFrame(animP);
-}
+function animP(){ctx.clearRect(0,0,W,H);parts.forEach(p=>{p.update();p.draw()});for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++){const dx=parts[i].x-parts[j].x,dy=parts[i].y-parts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.moveTo(parts[i].x,parts[i].y);ctx.lineTo(parts[j].x,parts[j].y);ctx.strokeStyle=`rgba(0,229,255,${0.06*(1-d/100)})`;ctx.lineWidth=0.5;ctx.stroke()}}requestAnimationFrame(animP)}
 animP();
 
-// ── NAVBAR ──
-window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50));
+// ── CUSTOM CURSOR ──
+const cursor=document.getElementById('cursor');
+const trail=document.getElementById('cursor-trail');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+  setTimeout(()=>{trail.style.left=mx+'px';trail.style.top=my+'px'},80);
+});
+document.addEventListener('mousedown',()=>{cursor.style.width='6px';cursor.style.height='6px'});
+document.addEventListener('mouseup',()=>{cursor.style.width='12px';cursor.style.height='12px'});
+
+// ── READ PROGRESS ──
+window.addEventListener('scroll',()=>{
+  const doc=document.documentElement;
+  const scrolled=(doc.scrollTop||document.body.scrollTop);
+  const total=(doc.scrollHeight||document.body.scrollHeight)-doc.clientHeight;
+  document.getElementById('read-progress').style.width=(scrolled/total*100)+'%';
+  document.getElementById('navbar').classList.toggle('scrolled',scrolled>50);
+  document.getElementById('back-top').classList.toggle('show',scrolled>400);
+});
+
+// ── TYPEWRITER ──
+const phrases_fr = [
+  'Spécialiste IT orienté support et exploitation.',
+  'Je maintiens vos systèmes disponibles 24/7.',
+  'Assistant en Infrastructure & réseaux.',
+  'Expert en Support IT & cybersécurité.',
+  'Certifié Google IT Support Professional.',
+  'Fondateur · +12 000 abonnés page CV.'
+];
+const phrases_en = [
+  'IT Specialist focused on support & operations.',
+  'I keep your systems available 24/7.',
+  'IT Infrastructure Assistant & Networks.',
+  'Expert in IT Support & cybersecurity.',
+  'Google IT Support Professional certified.',
+  'Founder · +12,000 followers CV page.'
+];
+let phraseIdx=0,charIdx=0,deleting=false,twTimer;
+function typewrite(){
+  const phrases = currentLang==='en' ? phrases_en : phrases_fr;
+  const el=document.getElementById('typewriter');
+  if(!el) return;
+  const current=phrases[phraseIdx];
+  if(!deleting){
+    el.textContent=current.substring(0,charIdx+1);
+    charIdx++;
+    if(charIdx===current.length){deleting=true;twTimer=setTimeout(typewrite,1800);return;}
+  } else {
+    el.textContent=current.substring(0,charIdx-1);
+    charIdx--;
+    if(charIdx===0){deleting=false;phraseIdx=(phraseIdx+1)%phrases.length;}
+  }
+  twTimer=setTimeout(typewrite,deleting?50:70);
+}
+setTimeout(typewrite, 2200);
+
+// ── THEME ──
+const themeBtn=document.getElementById('theme-btn');
+const themeIcon=document.getElementById('theme-icon');
+let darkMode=true;
+themeBtn.addEventListener('click',()=>{
+  darkMode=!darkMode;
+  document.body.classList.toggle('light',!darkMode);
+  themeIcon.className=darkMode?'fa fa-moon':'fa fa-sun';
+});
 
 // ── HAMBURGER ──
 const ham=document.getElementById('hamburger'),mMenu=document.getElementById('mobileMenu');
@@ -962,84 +1124,55 @@ document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',clo
 // ── OBSERVERS ──
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.1});
 document.querySelectorAll('.fade-in,.t-item').forEach(el=>obs.observe(el));
-
 const barObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.skill-fill').forEach(b=>b.style.width=b.dataset.width+'%')}),{threshold:0.3});
 document.querySelectorAll('.skill-cat').forEach(el=>barObs.observe(el));
 
 // ── COUNTERS ──
-function animCount(el,target,isAmber){
-  let s=0;const dur=target>100?2500:1800;
-  const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/dur,1);el.textContent=Math.floor(p*target);if(p<1)requestAnimationFrame(step);else el.textContent=target};
-  requestAnimationFrame(step);
+function animCount(el,target){
+  let s=0;const dur=target>1000?2800:1800;
+  const step=ts=>{
+    if(!s)s=ts;
+    const p=Math.min((ts-s)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(eased*target).toLocaleString('fr-FR');
+    if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString('fr-FR');
+  };requestAnimationFrame(step);
 }
 const cntObs=new IntersectionObserver(entries=>entries.forEach(e=>{
   if(e.isIntersecting){
     if(e.target.dataset.count) animCount(e.target,parseInt(e.target.dataset.count));
-    if(e.target.dataset.countAmber) animCount(e.target,parseInt(e.target.dataset.countAmber),true);
+    if(e.target.dataset.countAmber) animCount(e.target,parseInt(e.target.dataset.countAmber));
     cntObs.unobserve(e.target);
   }
 }),{threshold:0.5});
 document.querySelectorAll('[data-count],[data-count-amber]').forEach(el=>cntObs.observe(el));
 
-// ── VISITOR COUNTER — GoatCounter LIVE ──
-(function(){
-  const el = document.getElementById('vc-num');
-  if(!el) return;
+// ── CV DOWNLOAD ──
+function downloadCV(e){
+  e.preventDefault();
+  alert(currentLang==='en'?'CV PDF coming soon! Contact me on WhatsApp: +225 07 78 62 74 60':'CV PDF bientôt disponible ! Contactez-moi sur WhatsApp : +225 07 78 62 74 60');
+}
+document.getElementById('cv-download-btn').addEventListener('click',downloadCV);
+document.getElementById('cv-hero-btn').addEventListener('click',downloadCV);
 
+// ── VISITOR COUNTER (GoatCounter + fallback) ──
+(function(){
+  const el=document.getElementById('vc-num');
+  if(!el) return;
   function animateCount(target){
-    let start = 0;
-    const dur = 2000;
-    const step = (ts) => {
-      if(!start) start = ts;
-      const p = Math.min((ts - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
-      el.textContent = Math.floor(eased * target).toLocaleString('fr-FR');
-      if(p < 1) requestAnimationFrame(step);
-      else el.textContent = target.toLocaleString('fr-FR');
-    };
+    let s=0;const dur=2000;
+    const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/dur,1);const e2=1-Math.pow(1-p,3);el.textContent=Math.floor(e2*target).toLocaleString('fr-FR');if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString('fr-FR')};
     requestAnimationFrame(step);
   }
-
-  // Fetch real visitor count from GoatCounter API
-  fetch('https://optim.goatcounter.com/api/v0/stats/total', {
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(r => r.json())
-  .then(data => {
-    const total = data.total || data.count || data.hits || 0;
-    if(total > 0){
-      animateCount(total);
-    } else {
-      // Fallback: use localStorage counter if API returns 0
-      fallbackCounter();
-    }
-  })
-  .catch(() => {
-    // API not accessible (CORS) — use localStorage fallback
-    fallbackCounter();
-  });
-
-  function fallbackCounter(){
-    const KEY = 'ca_portfolio_visits';
-    const TODAY_KEY = 'ca_portfolio_today';
-    const today = new Date().toDateString();
-    let count = parseInt(localStorage.getItem(KEY) || '0');
-    if(localStorage.getItem(TODAY_KEY) !== today){
-      count += 1;
-      localStorage.setItem(KEY, count);
-      localStorage.setItem(TODAY_KEY, today);
-    }
-    animateCount(count + 247);
+  fetch('https://optim.goatcounter.com/api/v0/stats/total',{headers:{'Content-Type':'application/json'}})
+  .then(r=>r.json()).then(d=>{const t=d.total||d.count||d.hits||0;t>0?animateCount(t):fallback()}).catch(()=>fallback());
+  function fallback(){
+    const KEY='ca_portfolio_visits',TK='ca_portfolio_today',today=new Date().toDateString();
+    let count=parseInt(localStorage.getItem(KEY)||'0');
+    if(localStorage.getItem(TK)!==today){count++;localStorage.setItem(KEY,count);localStorage.setItem(TK,today)}
+    animateCount(count+247);
   }
 })();
-
-// Update visitor label on lang change
-const origSetLang = setLang;
-setLang = function(lang){
-  origSetLang(lang);
-  const lbl = document.getElementById('vc-label');
-  if(lbl) lbl.textContent = lang === 'en' ? 'Unique visitors' : 'Visiteurs uniques';
-};
 </script>
 </body>
 </html>
