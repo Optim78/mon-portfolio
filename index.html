@@ -18,8 +18,9 @@
 }
 body.light{
   --bg:#f0f4f8;--bg2:#e2eaf4;--bg3:#d4e0ef;
-  --text:#0d1f33;--muted:#4a6a8a;--border:rgba(0,150,200,0.15);
-  --card:rgba(255,255,255,0.9);
+  --cyan:#0066cc;--cyan2:#0052a3;--green:#1a8a00;--amber:#b87800;
+  --text:#0d1f33;--muted:#2a4a6a;--border:rgba(0,80,160,0.18);
+  --card:rgba(255,255,255,0.95);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -122,7 +123,7 @@ section{position:relative;z-index:1}
 .hero-tag{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,229,255,0.3);padding:0.35rem 1rem;border-radius:2px;margin-bottom:1.5rem;animation:fadeUp 0.8s ease both}
 .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.5s infinite}
 .hero-name{font-size:clamp(2.8rem,6vw,5rem);font-weight:900;letter-spacing:-0.03em;line-height:1;background:linear-gradient(135deg,#fff 20%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeUp 0.9s ease 0.1s both;margin-bottom:0.5rem}
-body.light .hero-name{background:linear-gradient(135deg,#0d1f33 20%,var(--cyan2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+body.light .hero-name{background:linear-gradient(135deg,#0d1f33 20%,#0066cc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-title{font-family:var(--mono);font-size:clamp(0.78rem,1.5vw,0.95rem);color:var(--muted);margin-bottom:1.5rem;animation:fadeUp 0.9s ease 0.2s both}
 .hero-title .hl{color:var(--cyan)}
 /* TYPEWRITER */
@@ -165,7 +166,7 @@ body.light .sec-title{color:#0d1f33}
 .about-photo-box::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,13,26,0.6) 0%,transparent 50%);z-index:1;border-radius:12px}
 .about-label{position:absolute;bottom:1rem;left:1rem;z-index:2;font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase}
 .about-text p{color:#7a9bbf;margin-bottom:1.1rem;font-size:0.97rem;line-height:1.85}
-body.light .about-text p{color:#4a6a8a}
+body.light .about-text p{color:#2a4a6a}
 .about-text p strong{color:var(--text);font-weight:600}
 .about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:1.5rem}
 .hl-item{display:flex;align-items:center;gap:0.5rem;font-size:0.83rem;color:var(--muted);padding:0.5rem 0.75rem;background:rgba(0,229,255,0.04);border:1px solid var(--border);border-radius:var(--r);transition:all 0.3s}
@@ -541,6 +542,8 @@ footer span{color:var(--cyan)}
     </div>
     <div class="kn-grid">
       <div class="kn-card fade-in"><span class="kn-icon">🏢</span><span class="kn-num" data-count="250">0</span><span class="kn-label" data-i18n="kn1">Employés supportés<br>chez ADEAL S.A</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🏛️</span><span class="kn-num" data-count="800">0</span><span class="kn-label" data-i18n="kn_bnetd">Employés supportés<br>chez BNETD</span></div>
+      <div class="kn-card fade-in"><span class="kn-icon">🏭</span><span class="kn-num" data-count="30">0</span><span class="kn-label" data-i18n="kn_egco">Employés supportés<br>chez EGCO SARL</span></div>
       <div class="kn-card fade-in"><span class="kn-icon">🎫</span><span class="kn-num" data-count="500">0</span><span class="kn-label" data-i18n="kn2">Tickets résolus<br>par an (estimation)</span></div>
       <div class="kn-card fade-in"><span class="kn-icon">🖥️</span><span class="kn-num" data-count="300">0</span><span class="kn-label" data-i18n="kn3">Équipements<br>déployés & maintenus</span></div>
       <div class="kn-card fade-in"><span class="kn-icon">⚡</span><span class="kn-num" data-count="98">0</span><span class="kn-label" data-i18n="kn4">% taux de résolution<br>des incidents</span></div>
@@ -644,6 +647,7 @@ footer span{color:var(--cyan)}
       <div class="stack-card fade-in"><i class="fa fa-robot"></i><span>Claude.ai / IA</span></div>
       <div class="stack-card fade-in"><i class="fa fa-pen-nib"></i><span>Canva</span></div>
       <div class="stack-card fade-in"><i class="fa fa-layer-group"></i><span>Photoshop</span></div>
+      <div class="stack-card fade-in"><i class="fa fa-comment-dots"></i><span>ChatGPT</span></div>
     </div>
   </div>
 </section>
@@ -924,6 +928,8 @@ const T = {
     hl1:"Support N1 & N2",hl2:"Active Directory",hl3:"Gestion de parc",hl4:"VLAN / OSPF / EIGRP",hl5:"ITIL / ITSM",hl6:"SQL & reporting",hl7:"Cybersécurité",hl8:"Windows Server",
     kn_tag:"Impact mesurable",kn_title:"Chiffres clés",
     kn1:"Employés supportés\nchez ADEAL S.A",kn2:"Tickets résolus\npar an (estimation)",kn3:"Équipements\ndéployés & maintenus",kn4:"% taux de résolution\ndes incidents",kn5:"Pays desservis\nvia page CV",kn6:"Certifications\nprofessionnelles",kn7:"Abonnés sur\npage CV pro",kn8:"Années d'expérience\nen IT Support",
+    kn_bnetd:"Employés supportés\nchez BNETD",
+    kn_egco:"Employés supportés\nchez EGCO SARL",
     cando_tag:"Valeur ajoutée",cando_title:"Ce que je peux faire pour vous",
     cando1_title:"Support IT & Helpdesk",cando1_desc:"Prise en charge rapide des incidents N1 & N2, réduction des temps d'arrêt, satisfaction utilisateur maximale et respect strict des SLA.",
     cando2_title:"Infrastructure & Réseau",cando2_desc:"Déploiement, configuration et maintenance d'infrastructures réseau et serveurs. Administration Active Directory, gestion VLAN et routage avancé.",
@@ -968,6 +974,8 @@ const T = {
     hl1:"Support N1 & N2",hl2:"Active Directory",hl3:"Fleet Management",hl4:"VLAN / OSPF / EIGRP",hl5:"ITIL / ITSM",hl6:"SQL & Reporting",hl7:"Cybersecurity",hl8:"Windows Server",
     kn_tag:"Measurable impact",kn_title:"Key figures",
     kn1:"Employees supported\nat ADEAL S.A",kn2:"Tickets resolved\nper year (estimate)",kn3:"Equipment\ndeployed & maintained",kn4:"% incident resolution\nrate",kn5:"Countries served\nvia CV page",kn6:"Professional\ncertifications",kn7:"Followers on\npro CV page",kn8:"Years of experience\nin IT Support",
+    kn_bnetd:"Employees supported\nat BNETD",
+    kn_egco:"Employees supported\nat EGCO SARL",
     cando_tag:"Added value",cando_title:"What I can do for you",
     cando1_title:"IT Support & Helpdesk",cando1_desc:"Fast incident handling N1 & N2, reduced downtime, maximum user satisfaction and strict SLA compliance.",
     cando2_title:"Infrastructure & Network",cando2_desc:"Deployment, configuration and maintenance of network and server infrastructures. Active Directory administration, VLAN management and advanced routing.",
@@ -1147,31 +1155,69 @@ const cntObs=new IntersectionObserver(entries=>entries.forEach(e=>{
 }),{threshold:0.5});
 document.querySelectorAll('[data-count],[data-count-amber]').forEach(el=>cntObs.observe(el));
 
-// ── CV DOWNLOAD ──
+// ── CV DOWNLOAD (FR / EN selon langue active) ──
 function downloadCV(e){
   e.preventDefault();
-  alert(currentLang==='en'?'CV PDF coming soon! Contact me on WhatsApp: +225 07 78 62 74 60':'CV PDF bientôt disponible ! Contactez-moi sur WhatsApp : +225 07 78 62 74 60');
+  const isFR = currentLang === 'fr';
+  const file = isFR ? 'cv_fr.pdf' : 'cv_en.pdf';
+  const name = isFR ? 'CV_Coulibaly_Alassane_FR.pdf' : 'CV_Coulibaly_Alassane_EN.pdf';
+  const link = document.createElement('a');
+  link.href = file;
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
-document.getElementById('cv-download-btn').addEventListener('click',downloadCV);
-document.getElementById('cv-hero-btn').addEventListener('click',downloadCV);
+document.getElementById('cv-download-btn').addEventListener('click', downloadCV);
+document.getElementById('cv-hero-btn').addEventListener('click', downloadCV);
 
-// ── VISITOR COUNTER (GoatCounter + fallback) ──
+// ── VISITOR COUNTER (GoatCounter + localStorage fallback) ──
 (function(){
   const el=document.getElementById('vc-num');
   if(!el) return;
+
   function animateCount(target){
     let s=0;const dur=2000;
-    const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/dur,1);const e2=1-Math.pow(1-p,3);el.textContent=Math.floor(e2*target).toLocaleString('fr-FR');if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString('fr-FR')};
+    const step=ts=>{
+      if(!s)s=ts;
+      const p=Math.min((ts-s)/dur,1);
+      const e2=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(e2*target).toLocaleString('fr-FR');
+      if(p<1)requestAnimationFrame(step);
+      else el.textContent=target.toLocaleString('fr-FR');
+    };
     requestAnimationFrame(step);
   }
-  fetch('https://optim.goatcounter.com/api/v0/stats/total',{headers:{'Content-Type':'application/json'}})
-  .then(r=>r.json()).then(d=>{const t=d.total||d.count||d.hits||0;t>0?animateCount(t):fallback()}).catch(()=>fallback());
+
   function fallback(){
-    const KEY='ca_portfolio_visits',TK='ca_portfolio_today',today=new Date().toDateString();
-    let count=parseInt(localStorage.getItem(KEY)||'0');
-    if(localStorage.getItem(TK)!==today){count++;localStorage.setItem(KEY,count);localStorage.setItem(TK,today)}
-    animateCount(count+247);
+    try {
+      const KEY='ca_visits_v2';
+      const SESSION_KEY='ca_session_counted';
+      // Count once per browser session
+      let total = parseInt(localStorage.getItem(KEY)||'248');
+      const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
+      if(!alreadyCounted){
+        total += 1;
+        localStorage.setItem(KEY, total);
+        sessionStorage.setItem(SESSION_KEY,'1');
+      }
+      animateCount(total);
+    } catch(e){ animateCount(248); }
   }
+
+  // Try GoatCounter API first
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 3000);
+  fetch('https://optim.goatcounter.com/api/v0/stats/total',{
+    signal: controller.signal,
+    headers:{'Content-Type':'application/json'}
+  })
+  .then(r=>{ clearTimeout(timeout); return r.json(); })
+  .then(d=>{
+    const t = d.total||d.count||d.hits||0;
+    t>0 ? animateCount(t) : fallback();
+  })
+  .catch(()=>{ clearTimeout(timeout); fallback(); });
 })();
 </script>
 </body>
